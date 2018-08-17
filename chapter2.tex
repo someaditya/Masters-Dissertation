@@ -1,5 +1,8 @@
 \chapter{State of Art}
+In this chapter, the background for the research is investigated. To further elucidate the motivation behind the research, the potential implications of formally measuring rumour impact are discussed in detail.
+
 \section{Background}
+
 \section{Statistical Machine Translation}
 \subsection{Word Based Translation Systems}
 \subsection{Phrase Based Translation Systems}
@@ -26,19 +29,39 @@ $$
 
 
 The phrase-based decoder developed by Koehn et al. (2022) employed a beam search algorithm similar to the one by Jelinek (1998)  for the comparison of different phrase-based translation models.
+\subsection{Syntax Based Translation}
+A syntax-based statistical translation model was proposed by Yamada et al (2001). Their model transformed a source-language parse tree into a target-language string by applying stochastic operations at each node. Those operations captured the linguistic differences such as word order and case marking. The model produced word alignments which were better those produced by IBM Model 5. [Reference]
+
+They assumed that an English parse three $\varepsilon$  is transformed into a French sentence $f$. The English parse tree $\varepsilon$ consisted of nodes $\varepsilon_1$,$\varepsilon_2$,.. $\varepsilon_n$ and the French sentence consisted of French words $f_1,f_2,..,f_m$.
+The authors considered three random variables, \textbf{N}, \textbf{R}, and \textbf{T} as channel operations which were applied to each node. \textit{Insertion} \textbf{N} is an operation that inserts a French word just before or after the node and it can be either none, left or right. \textit{Reorder} \textbf{R} is an operation that is used to change the order of the children of the node. \textit{Translation} \textbf{T} is an operation which translates a terminal English leaf word into a French word. 
+\begin{figure}
+\includegraphics[width=\textwidth,,height=250pt]{figures/syntax1.png}
+\caption{: Viterbi Alignments: Yamata et al's model (left) and IBM Model 5 (right). Darker lines are judged more
+correct by humans.} \label{fig1}
+\end{figure}
+
+\begin{center}
+\begin{tabular}{ |c|c|c| } 
+ \hline & Alignment ave. score & Perfect sents \\ 
+ \hline Yamata et al Model & 0.582 & 10 \\ 
+ \hline IBM Model 5 & 0.431 & 0 \\ 
+ \hline
+\end{tabular}
+\end{center}
+
 \subsection{Moses and Factored Translation Model}
 Moses is an open-source implementation of the statistical machine translation developed by Koehn et al (2007). The statistical machine translate systems are trained on huge quantities of parallel bilingual data and larger quantities of monolingual data. The parallel data is collection of sentences in two different languages which is sentence aligned, that is the sentence in one language is matched with sentence in corresponding language. In Moses, the system takes parallel data for the training process and uses the co-occurrences of phrases to infer translation correspondences between two languages of interest. In phrase-based machine translation, these correspondences are essentially between ceaseless arrangements of words, whereas in hierarchical phrase-based machine translation or syntax-based translation, more structure is added to the correspondences. Apart from being an open-source toolkit for SMT, Moses extended the phrase-based translation with factors and confusion network decoding. The phrase-based model in statistical machine translation was limited to the mapping of small text chunks with no express utilization of etymological data, be it morphological, syntactic, 
 or on the other hand semantic. Previous researches showed that these additional sources of information are valuable when integrated into pre-processing or post-processing steps. Moses also integrated confusion network decoding, a mechanism which allowed translation of ambiguous input and enabled tighter integration of speech recognition and machine translation. The machine translation system examines a network of different word choices instead of passing along the one-best output of the recognizer. 
 \subsubsection{Factored Translation Model}
 The non-factored SMT such as phrase-based SMT typically dealt only with surface form of words and had one phrase table as shown in Figure 1. 
 \begin{figure}
-\includegraphics[width=\textwidth]{figures/moses1.png}
+\includegraphics[width=\textwidth,,height=250pt]{figures/moses1.png}
 \caption{Non-factored Translation} \label{fig1}
 \end{figure}
 
 In factored translation model, the surface forms may be augmented with different factors, such as POS tags or lemma. This creates a factored representation of each word, Figure 2 [Refer].
 \begin{figure}
-\includegraphics[width=\textwidth]{figures/moses2.png}
+\includegraphics[width=\textwidth,,height=250pt]{figures/moses2.png}
 \caption{Factored Translation} \label{fig1}
 \end{figure}
 
@@ -67,8 +90,11 @@ There were several challenges faced in statistical machine translation, which ar
     \item \textbf{Lack of Large Parallel Corpora}   Statistical Machine Translation systems need large sets of parallel data for the translation task. But the unavailability of large corpora in low resource language posed a challenge to the SMT and it affected the efficiency of translation models in several low resource languages.
     \item\textbf{Sentence Alignment }   In parallel corpora, a single sentence in one language when translated into other language may be more than one sentence, thus aligning such sentences in parallel becomes a challenge. Further, algorithms such as Gale-Church alignment algorithm needed to be used for sentence alignment.
      \item\textbf{Word Alignment }      Most of the popular parallel corpora is sentence aligned or sentence alignment can be done using the previously mentioned Gale-Church Algorithm. The real challenge lies for word alignment, to know which word in source language aligns with which word in the target language, though IBM models (Reference) and HMM-approach (Reference) provides a better solution to this problem.
-      \item\textbf{Statistical anomalies }  Sometimes the real-world training sets tends to overwrite the translations of proper nouns. An abundance of particular noun in the training set may tend overwrite a less frequent noun in translated sentence. An example would be like,"\textit{Thóg mé an traein go Gaillimh} " should ideally translate to “ I took the train to Galway”, but gets to “I took the train to Cork” due to abundance of “train to Cork” in the training data.
-       \item\textbf{Statistical anomalies }
+     \item\textbf{Statistical anomalies }  Sometimes the real-world training sets tends to overwrite the translations of proper nouns. An abundance of particular noun in the training set may tend overwrite a less frequent noun in translated sentence. An example would be like,"\textit{Thóg mé an traein go Gaillimh} " in Irish should ideally translate to "\textit{I took the train to Galway}" in English, but gets to "\textit{I took the train to Cork"} due to abundance of "\textit{train to Cork}" in the training data.
+     \item\textbf{Idioms }Depending upon the corpora utilized for the translation task, idioms may not translate "idiomatically". For instance, utilizing Canadian Hansard [Reference] as the bilingual corpus, "hear" may constantly be meant "Bravo!" since in Parliament "Hear, Hear!" moves toward becoming "Bravo!". 
+     \item\textbf{Different Word Orders}    Different languages follow different word orders. In some languages, classification can be done by naming the typical order of subject (S), verb (V) and Object (O) in a sentence and in some languages, it can be represented as SVO or VSO. An example, the English sentence \textit{“Tom is eating vegetables”} is having the SVO word order, where as its translation in Hindi can be either \textit{“Tom vegetables kha raha hai”} which is SOV or \textit{“Vegetables kha raha hai Tom”} which is of the OVS order. 
+     \item\textbf{Out of vocabulary (OOV) words}    The SMT systems typically store the different word forms as separate symbols which are unrelated to each other and words forms or phrases that were not in the training data which could not be translated. This is generally due to the lack of training data, changes in the human domain or some morphological differences. 
+     \item\textbf{Mobile devices}   The rapid increase in the processing power of tablets and cell phones, combined with the wide accessibility of machine translation systems. However, combining other Speech recognition systems with SMT on mobile devices raises problems of sentence segmentation, de-normalization and punctuation prediction which is a basic necessity for quality translations.
 \end{itemize}
 \section{Neural Machine Translation Systems}
 \subsection{Introduction}
@@ -189,6 +215,25 @@ Need to write here
 The field of Deep Learning is quickly evolving and technologies change very frequently. The authors went to perform different case studies to ensure that OpenNMT adhere to code extensibility and support the future variants.
 
 Need to write a little more
+
+
+\begin{table}[h!]
+\caption{Performance Results for EN→DE on WMT15
+tested on newstest2014. Both system 2x500 RNN, embedding
+size 300, 13 epochs, batch size 64, beam size 5. We
+compare on a 50k vocabulary and a 32k BPE setting. OpenNMT
+showed improvements in speed and accuracy compared
+to Nematus.\label{long}}
+\centering
+ \begin{tabular}{ |c|c|c|c|c| } 
+ \hline Vocab & System & Speed Train & tok/sec Trans & BLEU \\ 
+ \hline V=50K & Nematus & 3393 & 284 & 17.28 
+ &&OpenNMT&4185&380&17.60\\ 
+  \hline V=32K & Nematus & 3221 & 252 & 18.25 
+ &&OpenNMT & 5254 & 457 & 19.34\\ 
+ \hline
+ \end{tabular}
+\end{table}
 
 \subsection{Nematus}
 
@@ -318,4 +363,18 @@ In order to validate the Neural Monkey’s performance the authors did a sanity 
 
 The used a bi-directional GRU network with 500 hidden units in each direction as the encoder and for decoder they used an RNN decoder with 1000 units in the hidden layer. They used a simple ‘tanh’ projection instead of max-out projection as used in the original model. The original paper used Adadelta (Zeiler, 2012) optimizer, whereas for this comparative study they used Adam (Kingma and Ba, 2014) . The comparison of the models is shown in Table. 
 
+\begin{table}[h!]
+\centering
+ \begin{tabular}{ |c|c|c| } 
+  \hline Model & BLEU & epoch \\ 
+  \hline  Bahdanau et al.(2014) - neural & 26.75 & 2.2\\
+  Bahdanau et al.(2014) - neural & 28.45 & 6.0\\
+  SMT & 33.30 & -\\
+  \hline Neural Monkey - greedy decoding & 25.08 & 1.2\\
+  \hline
+ \end{tabular}
 
+\end{table}
+
+
+\section{Related Work}
