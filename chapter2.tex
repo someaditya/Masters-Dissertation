@@ -1,0 +1,321 @@
+\chapter{State of Art}
+\section{Background}
+\section{Statistical Machine Translation}
+\subsection{Word Based Translation Systems}
+\subsection{Phrase Based Translation Systems}
+A novel phrase-based translation model and decoding algorithm was proposed by Koehn et al (2022) which enabled them to evaluate and compare several previously proposed phrase-based translation models. They designed a uniform framework to compare different other translation models. The model proposed by Koehn et al (2022) was based on the noisy channel model and they used the Bayes rule to reformulate the translation probability for translating a foreign sentence $f$ into English $e$ as
+
+$$
+argmax_ep(e|f)= argmax_ep(f|e)p(e)
+$$
+
+That allowed for language model $p(e)$ and a separate translation model $p(f|e)$.
+
+During the decoding phase, the foreign input sentence $f$ was segmented into a sequence of $I$ phrases $\bar{f_1^1}$ . Uniform probability distribution over all possible segmentation were assumed by the authors. Each foreign phrase $\bar{f_i}$ in $\bar{f_1^1}$ was translated into an English phrase $\bar{e_i}$, though there were reordering of the English sentences. A probability distribution $\phi(\bar{f_i}|\bar{e_i})$ modeled the entire phrase translation and due to the Bayes Rule, the direction of translation is inverted from a modeling standpoint. 
+
+Reordering of the English output phrases was modeled by a relative distortion probability distribution $d(a_i$ - $b_{i-1})$, where the start position of the foreign phrase that was translated to the English phrase was denoted by $a_i$ and the end position of the foreign phrase was denoted by $b_{i-1}$. Throughout their experiments, they trained the distortion probability distribution $d (.)$ using a joint probability model. Further to optimize the performance of the model , they introduced a factor $w$ for each generated English word in addition to trigram language model $p_{LM}$. 
+
+The best English output sentence $e_{best}$ given a foreign input sentence $f$ according to their model is ,
+
+$$
+ e_{best}= argmax_ep(e|f)
+         = argmax_ep(e|f)
+$$
+
+
+
+
+The phrase-based decoder developed by Koehn et al. (2022) employed a beam search algorithm similar to the one by Jelinek (1998)  for the comparison of different phrase-based translation models.
+\subsection{Moses and Factored Translation Model}
+Moses is an open-source implementation of the statistical machine translation developed by Koehn et al (2007). The statistical machine translate systems are trained on huge quantities of parallel bilingual data and larger quantities of monolingual data. The parallel data is collection of sentences in two different languages which is sentence aligned, that is the sentence in one language is matched with sentence in corresponding language. In Moses, the system takes parallel data for the training process and uses the co-occurrences of phrases to infer translation correspondences between two languages of interest. In phrase-based machine translation, these correspondences are essentially between ceaseless arrangements of words, whereas in hierarchical phrase-based machine translation or syntax-based translation, more structure is added to the correspondences. Apart from being an open-source toolkit for SMT, Moses extended the phrase-based translation with factors and confusion network decoding. The phrase-based model in statistical machine translation was limited to the mapping of small text chunks with no express utilization of etymological data, be it morphological, syntactic, 
+or on the other hand semantic. Previous researches showed that these additional sources of information are valuable when integrated into pre-processing or post-processing steps. Moses also integrated confusion network decoding, a mechanism which allowed translation of ambiguous input and enabled tighter integration of speech recognition and machine translation. The machine translation system examines a network of different word choices instead of passing along the one-best output of the recognizer. 
+\subsubsection{Factored Translation Model}
+The non-factored SMT such as phrase-based SMT typically dealt only with surface form of words and had one phrase table as shown in Figure 1. 
+\begin{figure}
+\includegraphics[width=\textwidth]{figures/moses1.png}
+\caption{Non-factored Translation} \label{fig1}
+\end{figure}
+
+In factored translation model, the surface forms may be augmented with different factors, such as POS tags or lemma. This creates a factored representation of each word, Figure 2 [Refer].
+\begin{figure}
+\includegraphics[width=\textwidth]{figures/moses2.png}
+\caption{Factored Translation} \label{fig1}
+\end{figure}
+
+The authors suggested that mapping of source phrases to target phrases might be decomposed into a few stages. Decomposition of the decoding process into different steps implied that diverse components can be modelled independently. Modelling factors in isolation takes into consideration adaptability in their application. It can likewise increment accuracy and decrease sparsity by limiting the number conditions for each step. For example, a surface form can be decomposed to surface forms and lemma, as shown in figure3.
+\begin{figure}
+\begin{center}
+\includegraphics[width=300pt]{figures/moses3.png}
+\caption{Example of graph of decoding systems} \label{fig1}
+\end{center}
+\end{figure}
+
+The graph was allowed to be user definable, thus it provided a scope for experimentation with different configurations to find the optimum configuration for the given language pair and data. The authors considered the factors on the source sentence to be fixed, therefore they did not implement any decoding step to create source factors from other source factors. They designed Moses such as every factor on the target language could have its own language model.  Many factors such as lemmas and POS tags are sparser than surface forms so it was possible to create a higher order language models for these factors.
+
+\subsubsection{Confusion Network Decoding}
+The authors wanted to meet the increasing demands of integrating machine translation technology into bigger information processing systems with upstream NLP/speech processing tools such as named entity recognizers, speech recognizers, morphological analyzers, etc. The authors experimented with confusion networks by focusing on the speech translation case, where initially the input is generated by a speech recognition system. Their immediate goal was to improve the language translation by combining the speech recognition and machine translation models. The biggest problem in translation of spoken language was, its proneness to speech recognition errors which used to corrupt the input syntax and its meaning. Previous researches also showed that better translations can be obtained from the transcriptions of the speech recognizer.  The authors found that significant improvements could have been achieved by applying machine translation techniques on larger sets of transcription texts generated by the speech recognizers and combining the scores of acoustic models, language models, and translation models. 
+
+In Moses, they implemented the confusing network decoding as discussed in (Bertoldi and Federico 2005), and they developed a simpler translation model and a more efficient implementation of the search algorithm.
+
+\subsection{Challenges in SMT}
+
+Statistical Machine Translation generated translation using statistical models whose parameters are derived from the analysis of bilingual text corpora. 
+
+There were several challenges faced in statistical machine translation, which are as follows:
+
+\begin{itemize}
+    \item \textbf{Lack of Large Parallel Corpora}   Statistical Machine Translation systems need large sets of parallel data for the translation task. But the unavailability of large corpora in low resource language posed a challenge to the SMT and it affected the efficiency of translation models in several low resource languages.
+    \item\textbf{Sentence Alignment }   In parallel corpora, a single sentence in one language when translated into other language may be more than one sentence, thus aligning such sentences in parallel becomes a challenge. Further, algorithms such as Gale-Church alignment algorithm needed to be used for sentence alignment.
+     \item\textbf{Word Alignment }      Most of the popular parallel corpora is sentence aligned or sentence alignment can be done using the previously mentioned Gale-Church Algorithm. The real challenge lies for word alignment, to know which word in source language aligns with which word in the target language, though IBM models (Reference) and HMM-approach (Reference) provides a better solution to this problem.
+      \item\textbf{Statistical anomalies }  Sometimes the real-world training sets tends to overwrite the translations of proper nouns. An abundance of particular noun in the training set may tend overwrite a less frequent noun in translated sentence. An example would be like,"\textit{Thóg mé an traein go Gaillimh} " should ideally translate to “ I took the train to Galway”, but gets to “I took the train to Cork” due to abundance of “train to Cork” in the training data.
+       \item\textbf{Statistical anomalies }
+\end{itemize}
+\section{Neural Machine Translation Systems}
+\subsection{Introduction}
+\subsection{Google's Neural Machine Translation}
+They proposed a model (see Figure 1) which follows the common sequence-to-sequence learning framework [41] with attention [2]. The model has three components: an encoder network, a decoder network and an attention network. The encoder network converts a source sentence into a list of vectors, one vector per input symbol. When this list of vectors is passed to decoder network it produces one symbol at a time until it encounters the special end-of-sentence symbol (EOS). The encoder and decoder are connected through an attention module which allows the decoder to focus on different regions of the source sentence during the course of decoding. 
+\begin{figure}
+\includegraphics[width=\textwidth]{figures/gnmt1.png}
+\caption{ The model architecture of GNMT, Google’s Neural Machine Translation system. On the left
+is the encoder network, on the right is the decoder network, in the middle is the attention module. The
+bottom encoder layer is bi-directional: the pink nodes gather information from left to right while the green
+nodes gather information from right to left. The other layers of the encoder are uni-directional. Residual
+connections start from the layer third from the bottom in the encoder and decoder. The model is partitioned
+into multiple GPUs to speed up training. In our setup, we have 8 encoder LSTM layers (1 bi-directional layer
+and 7 uni-directional layers), and 8 decoder layers. With this setting, one model replica is partitioned 8-ways
+and is placed on 8 different GPUs typically belonging to one host machine. During training, the bottom
+bi-directional encoder layers compute in parallel first. Once both finish, the uni-directional encoder layers
+can start computing, each on a separate GPU. To retain as much parallelism as possible during running
+the decoder layers, we use the bottom decoder layer output only for obtaining recurrent attention context,
+which is sent directly to all the remaining decoder layers. The softmax layer is also partitioned and placed on
+multiple GPUs. Depending on the output vocabulary size we either have them run on the same GPUs as the
+encoder and decoder networks, or have them run on a separate set of dedicated GPUs} \label{fig1}
+\end{figure}
+
+
+For Notation, they used bold lower case to denote the vectors, bold upper case to denote the matrices, cursive upper case to denote the sets, capital letters to denote the sequences and lower case to denote the individual symbols in a sequence. 
+
+They assumed (X,Y) as a source and target sentence pair , and $X$ = $x_1,x_2,x_3,..,x_M$ as the sequence of M symbols in the source text and $Y$= $y_1,y_2,y_3,.., y_N$ as the sequence of $N$ symbols in target text. The encoder is a simple function of the following form:
+$$x_1,x_2,..,x_M = EncoderRNN(x_1,x_2,..,x_M)$$
+
+Their decoder network is implemented as an amalgamation of an RNN network and a softmax Layer. The decoder RNN network creates a hidden state $Y_i$ for the next symbol to be predicted, which then goes through the softmax layer to generate a probability distribution over candidate output symbols. In their experiments the authors found out that Neural Machine Translation systems must have deep RNNs for encoder and decoder networks to achieve good accuracy, they need to capture the minute irregularities in the source and target languages. 
+
+The Attention Model they implemented in their research is similar to [2]. More precisely, they assumed yi-1 to be the decoder RNN from the previous decoding step which is the bottom decoder layer. Attention context aI , for the current time step is computed according to the following formulas:
+
+
+
+St
+
+
+
+Pt
+
+
+Ai
+
+Where AttentionFunction in their implementation is a feed forward network with one hidden layer.
+
+The authors acknowledged the fact that simply tacking up more Layers of LSTM makes the network slower and difficult to train, likely due to exploding and vanishing gradient problems [33,22]. The simple stacked LSTM layers work well up to 4 to 6 layers but performed very poorly beyond 8 layers.
+
+\begin{figure}
+\includegraphics[width=\textwidth]{figures/gnmt2.png}
+\caption{The difference between normal stacked LSTM and our stacked LSTM with residual connections.
+On the left: simple stacked LSTM layers [41]. On the right: our implementation of stacked LSTM layers
+with residual connections. With residual connections, input to the bottom LSTM layer (x
+0
+i
+’s to LSTM1) is
+element-wise added to the output from the bottom layer (x
+1
+i
+’s). This sum is then fed to the top LSTM layer
+(LSTM2) as the new input.} \label{fig1}
+\end{figure}
+
+The authors were motivated by the idea of modelling differences between an intermediate layer’s output and the targets, which has shown to work well for many projects in the past [16,21,40], they introduced residual connections among the LSTM layers in a stack (See Figure 2). Residual Connection greatly improved the gradient flow in the backward pass, which allowed them to train their encoder and decoder networks with 8 LSTM layers. In translation systems, the information required to translate some words in the output language can appear anywhere in the source language. They decided to use a bi-directional RNN for the encoder to have the optimum scenario in the encoder network. They used the bi-directional connections for the bottom encoder layer while keeping other layer uni-directional to allow maximum parallelization during computation. 
+
+\begin{figure}
+\includegraphics[width=\textwidth]{figures/gnmt3.png}
+\caption{The structure of bi-directional connections in the first layer of the encoder. LSTM layer $LSTM_f$
+processes information from left to right, while LSTM layer $LSTM_b$ processes information from right to left.
+Output from $LSTM_f$ and $LSTM_b$ are first concatenated and then fed to the next LSTM layer $LSTM_1$.} \label{fig1}
+\end{figure}
+
+Due to the complexity of their model the authors implemented model parallelism and data parallelism to speed up the training. But Model Parallelism came up with certain constraints on their Model Architecture like they could not bi-directional LSTM layers for their all encoder layers.  The authors implemented the Wordpiece model which was initially developed by Google Speech Recognition System [35] for solving Japanese/ Korean segmentation problem to solve the out-of-vocabulary translation problems. 
+
+\begin{figure}
+\includegraphics[width=\textwidth]{figures/gnmt4.png}
+\caption{Histogram of side-by-side scores on 500 sampled sentences from Wikipedia and news websites for a
+typical language pair, here English to Spanish (PBMT blue, GNMT red, Human orange). It can be seen that
+there is a wide distribution in scores, even for the human translation when rated by other humans, which
+shows how ambiguous the task is. It is clear that GNMT is much more accurate than PBMT.} \label{fig1}
+\end{figure}
+
+\subsection{OpenNMT}
+OpenNMT is an open source framework for Neural Machine Translation developed by Harvard University and SYSTRAN. They designed OpenNMT with three aims: a) prioritize first training and test efficiency b) maintain model modularity and readability, c) support significant research extensibility. [Main OpenNMT] . 
+
+They designed and developed  OpenNMT at Harvard, as a successor to $seq2seq-atn$, it was completely rewritten for ease of efficiency ,readability and generalizability. The OpenNMT framework includes the Vanilla NMT Models as well as provides support for attention, gating, stacking, input feeding, regularization, beam search and other options needed for State-of-the-art performance. They implemented the main system in the Lua/Torch mathematical framework which can be easily extended using Torch's internal neural network components. 
+
+The authors designed the OpenNMT to meet certain goals: System Efficiency, code modularity and model extensibility. 
+
+\begin{figure}
+\includegraphics[width=\textwidth]{figures/openmt.png}
+\caption{ Schematic view of neural machine translation. The red source words are first mapped to
+word vectors and then fed into a recurrent neural network (RNN). Upon seeing the heosi symbol, the final
+time step initializes a target blue RNN. At each target time step, attention is applied over the source RNN
+and combined with the current hidden state to produce a prediction p(wt|w1:t−1, x) of the next word. This
+prediction is then fed back into the target RNN} \label{fig1}
+\end{figure}
+
+
+\subsubsection{System Efficiency}
+
+One of the biggest concerns about the Neural Machine Translation Systems is the training efficiency, the systems take huge time to train sometimes ranging from days to weeks. The authors tried to address the issue and tried to make the training slightly faster in OpenNMT. 
+
+\textbf{Memory Sharing} The most common reason for high time consumption while training GPU-based NMT models is due to the memory size restrictions which limit the batch size. Though neural network toolkits like Torch has been designed to trade-off the surplus memory allocations for speed and declarative simplicity. For OpenNMT they implemented an external memory sharing system that utilizes the time-series control flow of NMT systems and vigorously shares the internal buffers between the clones. This implementation of vigorously memory reuse results in conservation of about 70\% of GPU memory with the default model size.
+
+\textbf{Multi-GPU} The authors added support for multi-GPU training using data parallelism. Two modes were made available: synchronous and asynchronous training. In synchronous training, the batches run concurrently on parallel GPU and gradients aggregated to update master parameters before resynchronization on each GPU for the next batch. While in asynchronous training, the batches run independent on each GPU and independent gradients accumulated to the master copy of the parameters. Asynchronous SGD is known to provide faster convergence [Reference e (Dean et al., 2012). ] 
+
+\textbf{C/Mobile/GPU Translation} The authors included several different translation models for different run-time environments in OpenNMT: a batched CPU/GPU implementation for quick translation of large set of sentences, a simple single-instance implementation for use on mobile devices and a specialized C implementation. 
+
+\subsubsection{Modularity for Research}
+
+The secondary goal for the authors were to make the code readable for non-experts and they targeted this goal by explicitly separating out optimizations from the core model and by including tutorial documentations within the code. 
+
+Need to write here 
+
+\textbf{Extensibility}
+
+The field of Deep Learning is quickly evolving and technologies change very frequently. The authors went to perform different case studies to ensure that OpenNMT adhere to code extensibility and support the future variants.
+
+Need to write a little more
+
+\subsection{Nematus}
+
+Nematus is an open source toolkit developed by the Edinburgh NLP group, it is implemented in Python and based on the Theano framework (Theano Development Team, 2016) . They implemented an attentional encoder-decoder architecture which is similar to the one described by Bahadanau et al.(2015) , but there were several implementational differences.
+
+•	In the implementation of Nematus they initialized the decoder hidden state with the mean of the source annotation, rather than the annotation at the last position of the encoder backward RNN. 
+•	They implemented a new conditional GRU with attention for Nematus.
+•	In the decoder, they used a feedforward hidden layer with tanh non-linearity rather than a maxout before the softmax layer.
+•	They didn’t implemented any additional biases for both encoder and decoder embedding layers.
+•	The implementation of Bahadanau et al. (2015) used Look, Generate, Update decoder phases whereas in Nematus they implemented Look, Update, Generate which simplified decoder implementation significantly (See Table 1). 
+•	They performed recurrent Bayesian dropout (Gal,,2015)
+•	In Nematus they allowed multiple features (or “factors”) at each time step instead of a single word embedding at each source position, with the final embedding being the concatenation of the embeddings of each feature (Sennrich and Haddow, 2016).
+•	They tying of embedding matrices (Press and Wolf,2017;Inan et al.,2016).
+
+Table 
+
+
+
+
+
+
+
+Given a source sequence (x1, . . . , xTx ) of length Tx and a target sequence (y1, . . . , yTy ) of length Ty, let hi be the annotation of the source symbol at position i, obtained by concatenating the forward and backward encoder RNN hidden states, hi = [ −→h i ; ←− h i ], and sj be the decoder hidden state at position j.
+
+Decoder Initialization	Bahadanau et al. (2015) initialized the decoder hidden state s with the last backward encoder state.
+So
+
+
+
+
+With Winit as trained parameters. But in the Nematus implementation they used the average annotation instead:
+
+
+
+S0 – tanh
+
+
+Conditional GRU with attention Nematus implemented a novel conditional GRU with attention, cGRUatt. A cGRUatt uses its previous hidden state sj−1, the whole set of source annotations C = {h1, . . . , hTx} and the previously decoded symbol yj−1 in order to update its hidden state sj , which is further used to decode symbol yj at position j
+
+sJ
+
+
+
+The conditional GRU layer with attention mechanism cGRUatt, consisted of three components : two GRU state transition blocks and an attention mechanism ATT in between. The first transition block, GRU1, combines the previous decoded symbol yj−1 and previous hidden state sj−1 in order to generate an intermediate representation s 0 j with the following formulations:
+
+
+
+
+
+
+
+
+
+
+
+, where E is the target word embedding matrix, s 0 j is the proposal intermediate representation, r 0 j and z 0 j being the reset and update gate activations. In this formulation, W0 , U0 , W0 r , U0 r , W0 z , U0 z are trained model parameters; σ is the logistic sigmoid activation function.
+
+In the Nematus implementation, the entire context set C along with intermediate hidden state sj is taken as input in the attention mechanism ATT, in order to computer the context vector cj as follows:
+
+
+
+
+
+
+
+
+
+
+
+, where αij is the normalized alignment weight between source symbol at position i and target symbol at position j and va, Ua,Wa are the trained model parameters.
+
+In the next step , sj is generated by the second transition block GRU2 
+
+Need to write here
+
+In Nematus, the two implemented GU blocks are not individually recurrent, they are only recurrent at the level of the whole cGRU layer. This way of combining RNN blocks is similar to what is referred in the literature as deep transition RNNs (Pascanu et al., 2014; Zilly et al., 2016) as opposed to the more common stacked RNNs (Schmidhuber, 1992; El Hihi and Bengio, 1995; Graves, 2013).
+
+deep output Given sj , yj−1, and cj , the output probability p(yj |sj , yj−1, cj ) is computed by a softmax activation, using an intermediate representation tj . p(yj |sj ,yj−1, cj ) = softmax (tjWo) tj = tanh (sjWt1 + E[yj−1]Wt2 + cjWt3) Wt1,Wt2,Wt3,Wo are the trained model parameters
+
+
+They designed the Nematus to minimize the cross-entropy on parallel training corpus. For the training they used tochastic gradient descent, or one of its variants with adaptive learning rate (Adadelta (Zeiler, 2012), RmsProp (Tieleman and Hinton, 2012), Adam (Kingma and Ba, 2014)). Further, to optimize towards arbitrary, sentence level loss function they provided support for minimum risk training (MRT) (Shen et al., 2016). 
+
+Result
+
+\subsection{Neural Monkey}
+Neural Monkey is an open-source toolkit written using the TensorFlow machine learning library (Abadi et al., 2016). It provides a higher level API, such that it should be enough for the users to be familiar with the models on the equation level, without delving into implementation details. As compared to other open-source NMT toolkits, Neural Monkey provides a higher level of abstraction, along with a simple configuration mechanism that allows for fast prototyping and reusing trained models and experiment management.
+
+The building blocks of Neural Monkey are not individual network layers like tfLearn or Lasagne , but they are more abstract objects like encoders and classifiers. These objects are parametrized so that their properties (e.g. number and sizes of hidden layers or dropout probability) can be set from a farther perspective. [Reference]. This design process allowed the authors to separate the configuration of the experiments from the actual code, which prevented the users from interleaving the configuration with other program logic. 
+
+
+
+
+
+Fig 
+
+
+
+
+
+
+
+
+In Neural Translation Systems, the loading and processing of datasets is one of the most important systems. The dataset in Neural Monkey is created in three step, first an input file is read using a Reader which load a file containing paths to JPEG images and load them as NumPy arrays, or read tokenized text as a list of lists of string tokens. The next phase is pre-processors, the series created by the readers is pre-processed by the system such as byte-pair encoding (Sennrich et al., 2016) which loads a list of merges and segments the text accordingly. Finally, the dataset-level pre-processors are applied of multiple series data to create the final dataset. 
+
+
+
+
+
+Fig
+
+
+
+
+
+
+
+The model in Neural Monkey is defined by different model parts such as encoders and decoders. The authors defined the encoders and decoders in more general than the classical Sequence to Sequence Learning. They defined the Encoders as parts of the model which take the input and compute a representation of it. They used runners for the execution of the Decoders. They designed different runners to represent different ways of running the model. They implemented trainer which is a runner to modify the parameters of the model, to collect the objective functions and use them in a optimizer. They used an object called TensorFlow manager to manage all the TensorFlow sessions. 
+
+In order to validate the Neural Monkey’s performance the authors did a sanity check evaluation on the architechture introduced by Bahadanau et al. (2014) which became the standard baseline model in NMT research. 
+
+
+
+
+
+
+
+
+The used a bi-directional GRU network with 500 hidden units in each direction as the encoder and for decoder they used an RNN decoder with 1000 units in the hidden layer. They used a simple ‘tanh’ projection instead of max-out projection as used in the original model. The original paper used Adadelta (Zeiler, 2012) optimizer, whereas for this comparative study they used Adam (Kingma and Ba, 2014) . The comparison of the models is shown in Table. 
+
+
