@@ -237,117 +237,120 @@ to Nematus.\label{long}}
 
 \subsection{Nematus}
 
-Nematus is an open source toolkit developed by the Edinburgh NLP group, it is implemented in Python and based on the Theano framework (Theano Development Team, 2016) . They implemented an attentional encoder-decoder architecture which is similar to the one described by Bahadanau et al.(2015) , but there were several implementational differences.
+Nematus is an open source toolkit developed by Sennrich et al.(2017) from the Edinburgh NLP group, it is implemented in Python and based on the Theano framework (Theano Development Team, 2016) . They implemented an attentional encoder-decoder architecture which is similar to the one described by Bahadanau et al.(2015) , but there were several implementational differences.
+\begin{itemize}
+\item In the implementation of Nematus they initialized the decoder hidden state with the mean of the source annotation, rather than the annotation at the last position of the encoder backward RNN. 
+\item They implemented a new conditional GRU with attention for Nematus.
+\item In the decoder, they used a feedforward hidden layer with tanh non-linearity rather than a maxout before the softmax layer.
+\item They didn’t implemented any additional biases for both encoder and decoder embedding layers.
+\item The implementation of Bahadanau et al. (2015) used Look, Generate, Update decoder phases whereas in Nematus they implemented Look, Update, Generate which simplified decoder implementation significantly (See Table 1). 
+\item They performed recurrent Bayesian dropout (Gal,,2015)
+\item In Nematus they allowed multiple features (or “factors”) at each time step instead of a single word embedding at each source position, with the final embedding being the concatenation of the embeddings of each feature (Sennrich and Haddow, 2016).
+\item They allowed tying of embedding matrices (Press and Wolf,2017;Inan et al.,2016).
+\end{itemize}
 
-•	In the implementation of Nematus they initialized the decoder hidden state with the mean of the source annotation, rather than the annotation at the last position of the encoder backward RNN. 
-•	They implemented a new conditional GRU with attention for Nematus.
-•	In the decoder, they used a feedforward hidden layer with tanh non-linearity rather than a maxout before the softmax layer.
-•	They didn’t implemented any additional biases for both encoder and decoder embedding layers.
-•	The implementation of Bahadanau et al. (2015) used Look, Generate, Update decoder phases whereas in Nematus they implemented Look, Update, Generate which simplified decoder implementation significantly (See Table 1). 
-•	They performed recurrent Bayesian dropout (Gal,,2015)
-•	In Nematus they allowed multiple features (or “factors”) at each time step instead of a single word embedding at each source position, with the final embedding being the concatenation of the embeddings of each feature (Sennrich and Haddow, 2016).
-•	They tying of embedding matrices (Press and Wolf,2017;Inan et al.,2016).
+\begin{table}[h!]
+\centering
+ \begin{tabular}{ |ll|ll|} 
+ \hline
+ \multicolumn{2}{|l|}{RNNSearch (Bahdanau et al., 2015)} & \multicolumn{2}{l|}{Nematus (DL4MT)}\\
+  \hline  Phase & Output - Input & Phase & Output - Input \\
+  \hline Look & $C_j$ $\leftarrow$ $S_{j-1}$ ,C & Look & $C_j$ $\leftarrow$ $S_{j-1}$, $Y_{j-1}$ ,C \\
+  Generate & $Y_j$ $\leftarrow$ $S_{j-1}$, $Y_{j-1}$ ,$C_j$ & Update& $S_j$ $\leftarrow$ $S_{j-1}$, $Y_{j-1}$ ,$C_j$ \\
+  Update & $S_j$ $\leftarrow$ $S_{j-1}$, $Y_{j}$ ,$C_j$ & Generate& $Y_j$ $\leftarrow$ $S_{j}$, $Y_{j-1}$ ,$C_j$ \\
+  \hline
+ \end{tabular}
 
-Table 
+\caption{Decoder phase differences between Nematus (DL4MT) and RNNSearch (Bahdanau et al., 2015)}
+\end{table}
 
+Given a source sequence ($x_1, . . . , x_T_x$ ) of length $T_x$ and a target sequence ($y_1, . . . , y_T_y$ ) of length $T_y$, let $h_i$ be the annotation of the source symbol at position $i$, obtained by concatenating the forward and backward encoder RNN hidden states, $h_i$ = [\overrightarrow{h_i} ; \overleftarrow{h_i} ], and $s_j$ be the decoder hidden state at position $j$.
 
+\textbf{Decoder Initialization} Bahadanau et al. (2015) initialized the decoder hidden state $s$ with the last backward encoder state.
+\begin{equation}
+S_0 = tanh (W_{init}\overleftarrow{h_i})
+\end{equation}
 
+With $W_{init}$ as trained parameters. But in the Nematus implementation they used the average annotation instead:
 
+\begin{equation}
+S_0 = tanh (W_{init} \frac{\sum_{i=1}^{T_x}h_i}{T_x})
+\end{equation}
 
+\textbf{Conditional GRU with attention} Nematus implemented a novel conditional GRU with attention, $cGRU_{att}$. A $cGRU_{att}$ uses its previous hidden state $s_{j-1}$, the whole set of source annotations $C = {h_1, . . . , h_T_x}$ and the previously decoded symbol $y_{j-1}$ in order to update its hidden state $s_j$ , which is further used to decode symbol $y_j$ at position $j$.
 
-
-Given a source sequence (x1, . . . , xTx ) of length Tx and a target sequence (y1, . . . , yTy ) of length Ty, let hi be the annotation of the source symbol at position i, obtained by concatenating the forward and backward encoder RNN hidden states, hi = [ −→h i ; ←− h i ], and sj be the decoder hidden state at position j.
-
-Decoder Initialization	Bahadanau et al. (2015) initialized the decoder hidden state s with the last backward encoder state.
-So
-
-
-
-
-With Winit as trained parameters. But in the Nematus implementation they used the average annotation instead:
-
-
-
-S0 – tanh
-
-
-Conditional GRU with attention Nematus implemented a novel conditional GRU with attention, cGRUatt. A cGRUatt uses its previous hidden state sj−1, the whole set of source annotations C = {h1, . . . , hTx} and the previously decoded symbol yj−1 in order to update its hidden state sj , which is further used to decode symbol yj at position j
-
-sJ
-
-
-
-The conditional GRU layer with attention mechanism cGRUatt, consisted of three components : two GRU state transition blocks and an attention mechanism ATT in between. The first transition block, GRU1, combines the previous decoded symbol yj−1 and previous hidden state sj−1 in order to generate an intermediate representation s 0 j with the following formulations:
-
-
-
-
-
-
+\begin{equation}
+s_j= cGRU_{att}(s_{j-1},y_{j-1},C)
+\end{equation}
 
 
+The conditional GRU layer with attention mechanism $cGRU_{att}$, consisted of three components : two GRU state transition blocks and an attention mechanism ATT in between. The first transition block, $GRU_1$, combines the previous decoded symbol  $y_{j-1}$ and previous hidden state $s_{j-1}$ in order to generate an intermediate representation $s_j^`$ with the following formulations:
 
 
+\begin{align*}
+s_j^` &= GRU_1(y_{j-1},s_{j-1})=(1-z_j^`)\bigodot \underline{s}_j^`+z_j^`\bigodot s_{j-1}^`,\\
+\underline{s}_j^`&= tanh(W^`E[y_{j-1}]+r_j^`\bigodot(U^`s_{j-1})),\\
+{r}_j^`&= \sigma (W_r^`E[y_{j-1}]+U_r^`s_{j-1}),\\
+{z}_j^`&= \sigma (W_z^`E[y_{j-1}]+U_z^`s_{j-1}),
+\end{align*}
 
-, where E is the target word embedding matrix, s 0 j is the proposal intermediate representation, r 0 j and z 0 j being the reset and update gate activations. In this formulation, W0 , U0 , W0 r , U0 r , W0 z , U0 z are trained model parameters; σ is the logistic sigmoid activation function.
+, where $E$ is the target word embedding matrix, \underline{s}$_j^`$ is the proposal intermediate representation, $r_j^`$ and $z_j^`$ being the reset and update gate activation. In this formulation, $W^`$ , $U^`$ , $W_r^`$ , $U_r^`$ , $W_z^`$ , $U_z^`$ are trained model parameters; $\sigma$ is the logistic $sigmoid$ activation function.
 
-In the Nematus implementation, the entire context set C along with intermediate hidden state sj is taken as input in the attention mechanism ATT, in order to computer the context vector cj as follows:
+In the Nematus implementation, the entire context set $C$ along with intermediate hidden state $s_j$ is taken as input in the attention mechanism ATT, in order to computer the context vector $c_j$ as follows:
 
+\begin{align*}
+c_j &= ATT(C,s_j^`)= \sum_{i}^{T_x}{a_{ij}}h_i\\
+\alpha_{ij}&= \frac{exp(e_{ij})}{\sum_{k=1}^{T_x}exp(e_{kj})}\\
+e_{ij} &= V_{\alpha}^T tanh(U_{\alpha}s_j^`+W__{\alpha}h_i)
+\end{align*}
+, where $\alpha_{ij}$ is the normalized alignment weight between source symbol at position $i$ and target symbol at position $j$ and $v_\alpha$, $U_\alpha$,$W_\alpha$ are the trained model parameters.
 
+In the next step , $s_j$ is generated by the second transition block $GRU_2$ 
 
+\begin{align*}
+s_j^` = GRU_2(s_j^`,c_j)&=(1-z_j^`)\bigodot \underline{s}_j+z_j\bigodot s_{j}^`,\\
+\underline{s}_j&= tanh(Wc_j+r_j\bigodot(Us_j^`)),\\
+{r}_j&= \sigma (W_rc_j+U_rs_j^`),\\
+{z}_j&= \sigma (W_zc_j+U_zs_j^`),
+\end{align*}
 
-
-
-
-
-
-
-
-, where αij is the normalized alignment weight between source symbol at position i and target symbol at position j and va, Ua,Wa are the trained model parameters.
-
-In the next step , sj is generated by the second transition block GRU2 
-
-Need to write here
+, where \underline{s}$_j$ is the proposal hidden state, $r_j$ and $z_j$ being the reset and update gate activation. In this formulation, $W$ , $U$ , $W_r$ , $U_r$ , $W_z$ , $U_z$ are trained model parameters.
 
 In Nematus, the two implemented GU blocks are not individually recurrent, they are only recurrent at the level of the whole cGRU layer. This way of combining RNN blocks is similar to what is referred in the literature as deep transition RNNs (Pascanu et al., 2014; Zilly et al., 2016) as opposed to the more common stacked RNNs (Schmidhuber, 1992; El Hihi and Bengio, 1995; Graves, 2013).
 
-deep output Given sj , yj−1, and cj , the output probability p(yj |sj , yj−1, cj ) is computed by a softmax activation, using an intermediate representation tj . p(yj |sj ,yj−1, cj ) = softmax (tjWo) tj = tanh (sjWt1 + E[yj−1]Wt2 + cjWt3) Wt1,Wt2,Wt3,Wo are the trained model parameters
+\textbf{deep output} Given $s_j , y_{j-1},$ and $c_j$ , the output probability $p(y_j|s_j , y_{j-1}, c_j )$ is computed by a softmax activation, using an intermediate representation $t_j$ . 
 
+\begin{align*}
+p(y_j|s_j , y_{j-1}, c_j ) = softmax (t_jW_o)\\
+t_j=tanh (s_jW_{t1} + E[y_{j-1}]W_{t2} + c_jW_{t3}) \\
+\end{align*}
 
-They designed the Nematus to minimize the cross-entropy on parallel training corpus. For the training they used tochastic gradient descent, or one of its variants with adaptive learning rate (Adadelta (Zeiler, 2012), RmsProp (Tieleman and Hinton, 2012), Adam (Kingma and Ba, 2014)). Further, to optimize towards arbitrary, sentence level loss function they provided support for minimum risk training (MRT) (Shen et al., 2016). 
+,where $W_{t1},W_{t2},W_{t3},W_o$ are the trained model parameters.
 
-Result
+They designed the Nematus to minimize the cross-entropy on parallel training corpus. For the training they used stochastic gradient descent, or one of its variants with adaptive learning rate (Adadelta (Zeiler, 2012), RmsProp (Tieleman and Hinton, 2012), Adam (Kingma and Ba, 2014)). Further, to optimize towards arbitrary, sentence level loss function they provided support for minimum risk training (MRT) (Shen et al., 2016). 
+
+\begin{figure}
+\includegraphics[width=\textwidth]{figures/nematus.png}
+\caption{ Search graph visualisation for DE$\rightarrow$ EN
+translation of "Hallo Welt!" with beam size 3 using Nematus} \label{fignm2}
+\end{figure}
 
 \subsection{Neural Monkey}
 Neural Monkey is an open-source toolkit written using the TensorFlow machine learning library (Abadi et al., 2016). It provides a higher level API, such that it should be enough for the users to be familiar with the models on the equation level, without delving into implementation details. As compared to other open-source NMT toolkits, Neural Monkey provides a higher level of abstraction, along with a simple configuration mechanism that allows for fast prototyping and reusing trained models and experiment management.
 
-The building blocks of Neural Monkey are not individual network layers like tfLearn or Lasagne , but they are more abstract objects like encoders and classifiers. These objects are parametrized so that their properties (e.g. number and sizes of hidden layers or dropout probability) can be set from a farther perspective. [Reference]. This design process allowed the authors to separate the configuration of the experiments from the actual code, which prevented the users from interleaving the configuration with other program logic. 
+The building blocks of Neural Monkey are not individual network layers like \textit{tfLearn} or \textit{Lasagne} , but they are more abstract objects like encoders and classifiers. These objects are parametrized so that their properties (e.g. number and sizes of hidden layers or dropout probability) can be set from a farther perspective. [Reference]. This design process allowed the authors to separate the configuration of the experiments from the actual code, which prevented the users from interleaving the configuration with other program logic. 
 
-
-
-
-
-Fig 
-
-
-
-
-
-
-
+\begin{figure}
+\includegraphics[width=\textwidth]{figures/nmonkey2.png}
+\caption{ Creation of Dataset in Neural Monkey} \label{fignm2}
+\end{figure}
 
 In Neural Translation Systems, the loading and processing of datasets is one of the most important systems. The dataset in Neural Monkey is created in three step, first an input file is read using a Reader which load a file containing paths to JPEG images and load them as NumPy arrays, or read tokenized text as a list of lists of string tokens. The next phase is pre-processors, the series created by the readers is pre-processed by the system such as byte-pair encoding (Sennrich et al., 2016) which loads a list of merges and segments the text accordingly. Finally, the dataset-level pre-processors are applied of multiple series data to create the final dataset. 
 
-
-
-
-
-Fig
-
-
-
-
-
+\begin{figure}
+\includegraphics[width=\textwidth]{figures/nmonkey1.png}
+\caption{ Model workflow in Neural Monkey} \label{fignm1}
+\end{figure}
 
 
 The model in Neural Monkey is defined by different model parts such as encoders and decoders. The authors defined the encoders and decoders in more general than the classical Sequence to Sequence Learning. They defined the Encoders as parts of the model which take the input and compute a representation of it. They used runners for the execution of the Decoders. They designed different runners to represent different ways of running the model. They implemented trainer which is a runner to modify the parameters of the model, to collect the objective functions and use them in a optimizer. They used an object called TensorFlow manager to manage all the TensorFlow sessions. 
@@ -371,10 +374,10 @@ The used a bi-directional GRU network with 500 hidden units in each direction as
   Bahdanau et al.(2014) - neural & 28.45 & 6.0\\
   SMT & 33.30 & -\\
   \hline Neural Monkey - greedy decoding & 25.08 & 1.2\\
+  Neural Monkey + CGRU – greedy decoding  & 27.35 & 1.6\\
   \hline
  \end{tabular}
-
+\caption{Results achieved by Neural Monkey on the WMT14 News Task French to English dataset with the number epochs}
 \end{table}
-
 
 \section{Related Work}
