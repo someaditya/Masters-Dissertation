@@ -1,6 +1,6 @@
 \chapter{Implementation}
 \section{Data Gathering}
-\subsection{Training Dataset}
+\subsection{Dataset for Fine Tuning}
 \subsubsection{TED Talks}
 \begin{figure}
 \includegraphics[width=\textwidth]{figures/tedtalks.png}
@@ -19,7 +19,7 @@ Moses is one of the most successful implementations of the Statistical Machine T
 \end{figure}
 TED.com discontinued their Open API project and so there is no direct way to fetch the transcripts of talks. TED.com is a static website, so talks link location is static and can be accessed if prior information of talks details is obtained through Beautiful soup and $urllib$ library in python 
 
-Firstly, the Beautiful Soup library is used to fetch the links of all the 396 TED Talks which are available in the Hindi language from the home page of the TED Official Website. The URL of the web page is passed to the method which implements the Beautiful Soup.  For each and every web page, the $find/_all()$ method finds all the “$a$” tags in the respective pages. Further, $attrs$ method is used to find all the $“href”$ which are having "$/talks$". The URL to the original talks is obtained and stored in a list for further parsing. The method is iterated through the entire list of pages having Hindi TED Talks. 
+Firstly, the Beautiful Soup library is used to fetch the links of all the 411 TED Talks which are available in the Hindi language from the home page of the TED Official Website. The URL of the web page is passed to the method which implements the Beautiful Soup.  For each and every web page, the $find/_all()$ method finds all the “$a$” tags in the respective pages. Further, $attrs$ method is used to find all the $“href”$ which are having "$/talks$". The URL to the original talks is obtained and stored in a list for further parsing. The method is iterated through the entire list of pages having Hindi TED Talks. 
 
 The transcripts for the talks are fetched from TED’s internal server which is having an open access and URL is appended "$transcript.json?language=en$" . Two different methods for English and Hindi are implemented to obtain the JSON from the respective URLs and load into the data file. 
 

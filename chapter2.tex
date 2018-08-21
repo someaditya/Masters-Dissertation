@@ -61,7 +61,7 @@ The non-factored SMT such as phrase-based SMT typically dealt only with surface 
 
 In factored translation model, the surface forms may be augmented with different factors, such as POS tags or lemma. This creates a factored representation of each word, Figure 2 [Refer].
 \begin{figure}
-\includegraphics[width=\textwidth,,height=250pt]{figures/moses2.png}
+\includegraphics[width=\textwidth,height=250pt]{figures/moses2.png}
 \caption{Factored Translation} \label{fig1}
 \end{figure}
 
@@ -99,10 +99,13 @@ There were several challenges faced in statistical machine translation, which ar
 \section{Neural Machine Translation Systems}
 \subsection{Introduction}
 \subsection{Google's Neural Machine Translation}
-They proposed a model (see Figure 1) which follows the common sequence-to-sequence learning framework [41] with attention [2]. The model has three components: an encoder network, a decoder network and an attention network. The encoder network converts a source sentence into a list of vectors, one vector per input symbol. When this list of vectors is passed to decoder network it produces one symbol at a time until it encounters the special end-of-sentence symbol (EOS). The encoder and decoder are connected through an attention module which allows the decoder to focus on different regions of the source sentence during the course of decoding. 
-\begin{figure}
+They proposed a model (see Figure \ref{gnmt1}) which follows the common sequence-to-sequence learning framework [41] with attention [2]. The model has three components: an encoder network, a decoder network and an attention network. The encoder network converts a source sentence into a list of vectors, one vector per input symbol. When this list of vectors is passed to decoder network it produces one symbol at a time until it encounters the special end-of-sentence symbol (EOS). The encoder and decoder are connected through an attention module which allows the decoder to focus on different regions of the source sentence during the course of decoding. 
+\begin{figure}[h]
 \includegraphics[width=\textwidth]{figures/gnmt1.png}
-\caption{ The model architecture of GNMT, Google’s Neural Machine Translation system. On the left
+\caption{ The model architecture of GNMT, Google’s Neural Machine Translation system. } \label{gnmt1}
+\end{figure}
+
+On the left
 is the encoder network, on the right is the decoder network, in the middle is the attention module. The
 bottom encoder layer is bi-directional: the pink nodes gather information from left to right while the green
 nodes gather information from right to left. The other layers of the encoder are uni-directional. Residual
@@ -115,9 +118,7 @@ can start computing, each on a separate GPU. To retain as much parallelism as po
 the decoder layers, we use the bottom decoder layer output only for obtaining recurrent attention context,
 which is sent directly to all the remaining decoder layers. The softmax layer is also partitioned and placed on
 multiple GPUs. Depending on the output vocabulary size we either have them run on the same GPUs as the
-encoder and decoder networks, or have them run on a separate set of dedicated GPUs} \label{fig1}
-\end{figure}
-
+encoder and decoder networks, or have them run on a separate set of dedicated GPUs.
 
 For Notation, they used bold lower case to denote the vectors, bold upper case to denote the matrices, cursive upper case to denote the sets, capital letters to denote the sequences and lower case to denote the individual symbols in a sequence. 
 
@@ -126,56 +127,135 @@ $$x_1,x_2,..,x_M = EncoderRNN(x_1,x_2,..,x_M)$$
 
 Their decoder network is implemented as an amalgamation of an RNN network and a softmax Layer. The decoder RNN network creates a hidden state $Y_i$ for the next symbol to be predicted, which then goes through the softmax layer to generate a probability distribution over candidate output symbols. In their experiments the authors found out that Neural Machine Translation systems must have deep RNNs for encoder and decoder networks to achieve good accuracy, they need to capture the minute irregularities in the source and target languages. 
 
-The Attention Model they implemented in their research is similar to [2]. More precisely, they assumed yi-1 to be the decoder RNN from the previous decoding step which is the bottom decoder layer. Attention context aI , for the current time step is computed according to the following formulas:
+The Attention Model they implemented in their research is similar to [2]. More precisely, they assumed $y_{i-1}$ to be the decoder RNN from the previous decoding step which is the bottom decoder layer. Attention context $a_i$ , for the current time step is computed according to the following formulas:
+
+\begin{align*}
+    s_t &= AttentionFunction(y_{i-1},x_t)\;\forall t \;1\leq t\leq M\\
+    p_t &= \frac{exp(s_t)}{\sum_{t=1}^M exp(s_t)}\;\forall t \;1\leq M\\
+    a_i &= \sum_{t=1}^M exp(s_t) p_t.x_t
+\end{align*}
 
 
-
-St
-
-
-
-Pt
-
-
-Ai
-
-Where AttentionFunction in their implementation is a feed forward network with one hidden layer.
+Where \textit{AttentionFunction} in their implementation is a feed forward network with one hidden layer.
 
 The authors acknowledged the fact that simply tacking up more Layers of LSTM makes the network slower and difficult to train, likely due to exploding and vanishing gradient problems [33,22]. The simple stacked LSTM layers work well up to 4 to 6 layers but performed very poorly beyond 8 layers.
 
 \begin{figure}
 \includegraphics[width=\textwidth]{figures/gnmt2.png}
-\caption{The difference between normal stacked LSTM and our stacked LSTM with residual connections.
-On the left: simple stacked LSTM layers [41]. On the right: our implementation of stacked LSTM layers
-with residual connections. With residual connections, input to the bottom LSTM layer (x
-0
-i
-’s to LSTM1) is
-element-wise added to the output from the bottom layer (x
-1
-i
-’s). This sum is then fed to the top LSTM layer
-(LSTM2) as the new input.} \label{fig1}
+\caption{The difference between normal stacked LSTM and their stacked LSTM with residual connections.} \label{gnmt2}
 \end{figure}
 
-The authors were motivated by the idea of modelling differences between an intermediate layer’s output and the targets, which has shown to work well for many projects in the past [16,21,40], they introduced residual connections among the LSTM layers in a stack (See Figure 2). Residual Connection greatly improved the gradient flow in the backward pass, which allowed them to train their encoder and decoder networks with 8 LSTM layers. In translation systems, the information required to translate some words in the output language can appear anywhere in the source language. They decided to use a bi-directional RNN for the encoder to have the optimum scenario in the encoder network. They used the bi-directional connections for the bottom encoder layer while keeping other layer uni-directional to allow maximum parallelization during computation. 
+The authors were motivated by the idea of modelling differences between an intermediate layer’s output and the targets, which has shown to work well for many projects in the past [16,21,40], they introduced residual connections among the LSTM layers in a stack (See Figure \ref{gnmt2}). Residual Connection greatly improved the gradient flow in the backward pass, which allowed them to train their encoder and decoder networks with 8 LSTM layers. In translation systems, the information required to translate some words in the output language can appear anywhere in the source language. They decided to use a bi-directional RNN for the encoder to have the optimum scenario in the encoder network (See Figure \ref{gnmt3}). They used the bi-directional connections for the bottom encoder layer while keeping other layer uni-directional to allow maximum parallelization during computation. 
 
 \begin{figure}
-\includegraphics[width=\textwidth]{figures/gnmt3.png}
+\includegraphics[width=\textwidth,height=250pt]{figures/gnmt3.png}
 \caption{The structure of bi-directional connections in the first layer of the encoder. LSTM layer $LSTM_f$
 processes information from left to right, while LSTM layer $LSTM_b$ processes information from right to left.
-Output from $LSTM_f$ and $LSTM_b$ are first concatenated and then fed to the next LSTM layer $LSTM_1$.} \label{fig1}
-\end{figure}
+Output from $LSTM_f$ and $LSTM_b$ are first concatenated and then fed to the next LSTM layer $LSTM_1$.} \label
+{gnmt3}\end{figure}
 
 Due to the complexity of their model the authors implemented model parallelism and data parallelism to speed up the training. But Model Parallelism came up with certain constraints on their Model Architecture like they could not bi-directional LSTM layers for their all encoder layers.  The authors implemented the Wordpiece model which was initially developed by Google Speech Recognition System [35] for solving Japanese/ Korean segmentation problem to solve the out-of-vocabulary translation problems. 
 
+
 \begin{figure}
-\includegraphics[width=\textwidth]{figures/gnmt4.png}
-\caption{Histogram of side-by-side scores on 500 sampled sentences from Wikipedia and news websites for a
-typical language pair, here English to Spanish (PBMT blue, GNMT red, Human orange). It can be seen that
-there is a wide distribution in scores, even for the human translation when rated by other humans, which
-shows how ambiguous the task is. It is clear that GNMT is much more accurate than PBMT.} \label{fig1}
+\includegraphics[width=\textwidth]{figures/gnmt5.png}
+\caption{Log perplexity vs. steps for Adam, SGD and Adam-then-SGD on WMT En $\rightarrow$ Fr during maximum
+likelihood training} \label{fig1}
 \end{figure}
+
+The authors used two publicly available corpora WMT’14 English-to-French (WMT En $\rightarrow$Fr) and English-to-German (WMT En $\rightarrow$De) as benchmarks for their Neural Machine Translation systems. In addition to these publicly available corpora they used Google’s translation production corpora which is much bigger than the WMT corpora for a given language pair. The WMT En-Fr contains 36M sentence pairs while the En-De contains 5M sentence pairs. They evaluated their models by carrying out side by side Human evaluations along with standard BLEU score metric. The side by side scores ranged from 0 to 6, with a score of 0 meaning “completely nonsense translation”, and a score of 6 meaning “perfect translation: the meaning of the translation is completely consistent with the source, and the grammar is correct”. They trained the models using the system they implemented in TensorFlow. For the initial stage of maximum likelihood training they used a combination of Adam [25] and SGD learning algorithms provided by TensorFlow. They ran Adam for the first 60K steps , after which they switched to simple SGD. They found that in the beginning Adam accelerates training but Adam alone converged to a worse point than a combination of Adam first, followed by SGD ( Figure 2.5). For the Adam part they used a learning rate of 0.0002 and for the SGD part they used a learning rate of 0.5. They used word-based, character-based, mixed-character-based and several wordpiece models with different vocabulary sizes for the experiments. Table summarizes the results they achieved on WMT En $\rightarrow$ Fr dataset. Their best model, WPM-32K achieved a BLEU score of 38.95. The WMT En $\rightarrow$ De was much more difficult than the En $\rightarrow$ Fr due to the less size of training data and German is a more morphologically rich language which needs vocabulary for word models. Their best model WPM-32K achieved a BLEU score of 24.61. 
+
+\begin{table}[h!]
+\centering
+ \begin{tabular}{ |ccc| } 
+  \hline Model & BLEU &  CPU decoding time
+per sentence (s) \\ 
+  \hline  Word &  37.90 & 0.2226\\
+  Character (512 nodes)& 38.01 & 1.0530\\
+  WPM-8K & 38.27 &  0.1919\\
+  WPM-16K &  37.60 & 0.1874\\
+  WPM-32K & 38.95 &  0.2118\\
+  Mixed Word/Character & 38.39 &  0.2774\\
+  \hline PBMT [15] & 37.0 &\\
+  LSTM (6 layers) [31]  &  31.5 & \\
+  LSTM (6 layers + PosUnk) [31] &33.1&\\
+  Deep-Att [45] &  37.7&\\
+  Deep-Att + PosUnk [45] &39.2\\
+  \hline
+ \end{tabular}
+\caption{Results of the Single model on WMT En$\rightarrow$ Fr (newstest2014)}
+\end{table}
+
+\begin{table}[h!]
+\centering
+ \begin{tabular}{ |ccc| } 
+  \hline Model & BLEU &  CPU decoding time
+per sentence (s) \\ 
+  \hline  Word &  23.12 & 0.2972\\
+  Character (512 nodes)& 22.62 & 0.8011\\
+  WPM-8K & 23.50 &  0.2079\\
+  WPM-16K & 24.36 & 0.1931\\
+  WPM-32K & 24.61 & 0.1882\\
+  Mixed Word/Character & 24.17 & 0.3268\\
+  \hline PBMT [6] & 20.7 &\\
+  RNNSearch [37]  &  16.5 & \\
+  RNNSearch-LV [37] &16.9&\\
+  Deep-Att [45] & 20.6&\\
+  \hline
+ \end{tabular}
+\caption{Results of the Single model on WMT En$\rightarrow$ De (newstest2014)}
+\end{table}
+
+
+They further used RL training to fine-tune the sentence BLEU score after normal maximum-likelihood training. The results of the best models showed that the fine-tuning of the models with RL can improve the BLEU scores. 
+
+
+\begin{table}[h!]
+\centering
+ \begin{tabular}{ |ccc| } 
+  \hline Dataset & Trained with log-likelihood &  Refined with RL \\ 
+  \hline  En$\rightarrow$Fr &   38.95 & 39.92\\
+  En$\rightarrow$De &  24.67 &  24.60\\
+  \hline
+ \end{tabular}
+\caption{Single model test BLEU scores after RL Refining}
+\end{table}
+
+They ensembled 8 RL-refined models and obtained a state-of-the-art result of 41.6 BLEU points on the WMT En$\rightarrow$Fr dataset. They obtained a state-of-the-art result of 26.30 BLEU points on the WMT En$\rightarrow$De dataset. The results are showed in Table 3.4.For the side-by-side comparison, humans were asked to rate four translations for the given source sentence. The four translations were: 1) the best phrase-based translation downloaded from statmt website, 2) an ensemble of 8 ML-trained models, 3) an ensemble of 8 ML-trained and then RL-refined models, and 4) reference human translation directly obtained from test data. The results are showed in Table x.The results clearly showed that though RL refinement can achieve better BLEU scores, but it barely improved the human impression of the translation quality. 
+
+\begin{table}[h!]
+\centering
+ \begin{tabular}{ |ccc| } 
+  \hline Language & Model &  BLEU \\ 
+  \hline  En$\rightarrow$Fr &   WPM-32K (8 models) & 40.35\\
+  &RL-refined WPM-32K (8 models)& 41.16\\
+  \hline
+  En$\rightarrow$De &  WPM-32K (8 models) &  26.20\\
+  &RL-refined WPM-32K (8 models)&26.30\\
+  \hline
+ \end{tabular}
+\caption{Model ensemble results}
+\end{table}
+
+
+
+
+\begin{table}[h!]
+\centering
+ \begin{tabular}{ |ccc| } 
+  \hline Model &  BLEU & Side-by-side
+averaged score \\ 
+  \hline PBMT [15]  &   37.0 & 3.87\\
+  NMT before RL& 40.35&4.46\\
+  NMT after RL&41.16& 4.44\\
+  \hline
+  Human &   &  4.82\\
+  \hline
+ \end{tabular}
+\caption{Human side-by-side evaluation results for En$\rightarrow$Fr model}
+\end{table}
+They further carried out extensive experiments on many Google’s internal production data sets. As the experiments mentioned earlier carried doubts whether RL improves the real translation quality or simply the BLEU metric, they did not use model refinement for these experiments. The results obtained by the experiment showed that their model reduced translations by more than 60\% compared to the PBMT model on the major pairs of languages.
+
 
 \subsection{OpenNMT}
 OpenNMT is an open source framework for Neural Machine Translation developed by Harvard University and SYSTRAN. They designed OpenNMT with three aims: a) prioritize first training and test efficiency b) maintain model modularity and readability, c) support significant research extensibility. [Main OpenNMT] . 
@@ -277,7 +357,7 @@ With $W_{init}$ as trained parameters. But in the Nematus implementation they us
 S_0 = tanh (W_{init} \frac{\sum_{i=1}^{T_x}h_i}{T_x})
 \end{equation}
 
-\textbf{Conditional GRU with attention} Nematus implemented a novel conditional GRU with attention, $cGRU_{att}$. A $cGRU_{att}$ uses its previous hidden state $s_{j-1}$, the whole set of source annotations $C = {h_1, . . . , h_T_x}$ and the previously decoded symbol $y_{j-1}$ in order to update its hidden state $s_j$ , which is further used to decode symbol $y_j$ at position $j$.
+\textbf{Conditional GRU with attention} Nematus implemented a novel conditional GRU with attention, $cGRU_{att}$. A $cGRU_{att}$ uses its previous hidden state $s_{j-1}$, the whole set of source annotations $C = {h_1, . . . , h_{T_x}}$ and the previously decoded symbol $y_{j-1}$ in order to update its hidden state $s_j$ , which is further used to decode symbol $y_j$ at position $j$.
 
 \begin{equation}
 s_j= cGRU_{att}(s_{j-1},y_{j-1},C)
