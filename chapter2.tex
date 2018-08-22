@@ -2,11 +2,91 @@
 In this chapter, the background for the research is investigated. To further elucidate the motivation behind the research, the potential implications of formally measuring rumour impact are discussed in detail.
 
 \section{Background}
+In 1949, Warren Weaver, researcher at Rockefeller Foundation , presented a set of proposals for machine based translations which were based on information theory and successes in code breaking during the Second World War.(\cite{Weaver})
+
+After few years, the machine translation research began in earnest in many US universities.As described by \cite{Hutchins55thegeorgetown-i.b.m.}, on January 7th 1954, the Georgetown-IBM experiment started, the IBM 701 computer automatically translated 60 Russian sentences into English for the first time in history. This was the first public demonstration of a machine translation system and it garnered much media and public interest.  
+ 
+The ALPAC Report by \cite{Pierce:1966:LMC:1102009} stated that machines cannot compete with the human translation quality and suggested that the funding for Machine Translation should be stopped. 
+
+\begin{figure}[h]
+\includegraphics[width=\textwidth,]{figures/timeline.png}
+\caption{Timeline of Machine Translation History} \label{sbmt}
+\end{figure}
 
 \section{Statistical Machine Translation}
+
+In this section, the various translation models in Statistical Machine Translation and their impact on machine translation is discussed. The evolution of Statistical Machine Translation from Word Based Models to Phrase based models are discussed in depth as it paves the base of this research.
+
 \subsection{Word Based Translation Systems}
+\cite{Brown:1988:SAL:991635.991651} proposed the use of statistical methods in Machine Translations. They proposed a translation process where the source text is partitioned into a set of fixed locations, then the glossary is used  to select the set of fixed locations to create a sequence, and finally words in target fixed locations are rearranged to form a target sentence. They successfully developed the statistical techniques for automatic glossary creation and arrangement of target word sequences but failed to provide examples for translation sentences.
+
+\cite{Brown:1990:SAM:92858.92860}   considered only the translation of individual
+sentences and used Bayes theorem to implement a new translation model, 
+\begin{equation*}
+    Pr(S|T)= \frac{Pr (S) Pr (T|S) }{Pr (T) }
+\end{equation*}
+,where Pr(T$|$S) is a probability the system produces when and T is a given target language and  S is a given source language. 
+
+\begin{figure}[h]
+\includegraphics[width=\textwidth]{figures/wbmt.png}
+\caption{
+A Statistical Machine Translation system  by \cite{Brown:1990:SAM:92858.92860} } \label{wbmt}
+\end{figure}
+
+A Source Language Model and a Translation Model outfitted a probability distribution over source-target sentence pair (S,T). The joint probability Pr (S, T) of the combined (S, T) was the result of the probability Pr (S) computed by the language model and the conditional probability Pr (T $|$ S) computed by the translation . The parameters of these models were evaluated automatically from an extensive database of source-target sentence sets utilizing an algorithm which optimized the fit between the models and the information.
+
+They experimented their model by creating an English vocabulary with 9,000 most common English words from Hansard data, and the French vocabulary with 9,000 most common French word. They applied their iterative algorithm to estimate some 81 million parameters from 40,000 pairs of sentences in each of the language. In the second approach, they used the statistical approach to decode 73 new french sentences. If the decoded sentence exactly matched the original translation it was assigned \textit{exact} category, otherwise it assigned \textit{alternate} or \textit{different} or \textit{wrong} or \textit{ungrammatical} based on the quality of translation.The system performed affirmatively for 48\% of the cases.
+
+\cite{Brown:1993:MSM:972470.972474} described a series of five statistical models for the translation process and gave algorithms for estimating the parameters of these models given a set of bilingual pairs of sentences. These models were later considered as the IBM alignment Models.They defined the concept of word-by-word alignment between the two pairs of bilingual sentences. Their algorithm assigned a probability to each of these word-by-word alignments for any given pair of sentences. Though their research was confined to smaller English and French translations but it was considerable improvement to the the alignment of word-by-word relationships in the pair of sentences.
+
+\cite{Vogel:1996:HWA:993268.993313} described a new model for word alignment in the statistical machine translation using first-order Hidden Markov Model(\cite{Jelinek76continuousspeech}) as it solved the time alignment problem for speech recognition. The main idea behind the model was to make the word-by-word alignment probabilities depend on the alignment positions rather than the absolute positions. The HMM-based model produced translation probabilities on par with the mixture alignment model and position alignments were much smoother in HMM-based model.
+
+\cite{Och:1999:EMD:977035.977046} described a method to determine bilingual word classes to be used in statistical machine translations. They developed an optimization criterion based on the maximum likelihood approach and further describe a clustering algorithm. The results of their experiments showed that the usage of bilingual word classes improved the statistical machine translations significantly.
+
+The IBM models were implemented in a toolkit called GIZA by \cite{Giza}, later updated to GIZA++ by \cite{Och:2000}.GIZA++ is open source and widely used.
+
+\subsection{Syntax Based Translation}
+A syntax-based statistical translation model was proposed by \cite{Yamada:2001:SST:1073012.1073079}. Their model transformed a source-language parse tree into a target-language string by applying stochastic operations at each node. Those operations captured the linguistic differences such as word order and case marking. The model produced word alignments which were better those produced by IBM Model 5. [Reference]
+
+They assumed that an English parse three $\varepsilon$  is transformed into a French sentence $f$. The English parse tree $\varepsilon$ consisted of nodes $\varepsilon_1$,$\varepsilon_2$,.. $\varepsilon_n$ and the French sentence consisted of French words $f_1,f_2,..,f_m$.
+The authors considered three random variables, \textbf{N}, \textbf{R}, and \textbf{T} as channel operations which were applied to each node. \textit{Insertion} \textbf{N} is an operation that inserts a French word just before or after the node and it can be either none, left or right. \textit{Reorder} \textbf{R} is an operation that is used to change the order of the children of the node. \textit{Translation} \textbf{T} is an operation which translates a terminal English leaf word into a French word. 
+
+The notation $ \theta = ( v, p,t )$  represents a  set of values of $N_i$, $R_i$ , T. Whereas, $ \theta_i = ( v_i, p_i,t_i )$  is a set of values of random variables associated with $\varepsilon_i$. $ \theta = \theta_1,\theta_2,...,\theta_n$is the set of all random variables associated with a parse tree $\varepsilon$ = $\varepsilon_1$,$\varepsilon_2$,..., $\varepsilon_n$.
+
+ The probability of getting a French sentence $f$ given an English parse tree $\varepsilon$ is given by,
+ 
+ \begin{equation}
+     p(f|\varepsilon)=\sum_{\theta:Str(\theta(\epsilon))=f}p(\theta|\varepsilon)
+ \end{equation}
+ 
+For the estimation of the model parameters they used the EM algorithm (\cite{10.2307/2984875}) which automatically updates the model parameters to maximize the likelihood of the training corpus. Initially the model parameters were initialized and afterwards for each and every iteration, the number of events were counted and weighted by the probabilities of the event. Before the next iteration, the current model parameters were used to calculate the probabilities of the events and then the model parameters were re-estimated using the counts.
+
+For the experiments they trained their model on a small English $\rightarrow$ Japanese corpus and evaluated the performance of their model along with IBM Model 5. To evaluate performance they let the models generate the most probable alignment of the training corpus (called the Viterbi alignment) which shows  how the learned model induced the internal structure of training data.
+The alignment produced by their model and IBM Model 5 are shown in Figure (\ref{sbmt}) , where the darker lines represent the alignments judged accurate by humans. They further obtained average score of the first 50 sentence
+pairs in the corpus and counted the number of perfectly aligned sentences, which is shown in Table \ref{sbmtt}.Their model got a much better result than IBM Model 5 with more number perfectly aligned sentences.
+\begin{figure}
+\includegraphics[width=\textwidth,,height=250pt]{figures/syntax1.png}
+\caption{: Viterbi Alignments: Yamata et al's model (left) and IBM Model 5 (right). Darker lines are judged more
+correct by humans.} \label{sbmt}
+\end{figure}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{ |c|c|c| } 
+ \hline & Alignment ave. score & Perfect sents \\ 
+ \hline Yamata et al Model & 0.582 & 10 \\ 
+ \hline IBM Model 5 & 0.431 & 0 \\ 
+ \hline
+\end{tabular}
+\caption{Human Evaluation : Yamata et al's model and IBM Model 5.}\label{sbmtt}
+\end{table}
+
+
 \subsection{Phrase Based Translation Systems}
-A novel phrase-based translation model and decoding algorithm was proposed by Koehn et al (2022) which enabled them to evaluate and compare several previously proposed phrase-based translation models. They designed a uniform framework to compare different other translation models. The model proposed by Koehn et al (2022) was based on the noisy channel model and they used the Bayes rule to reformulate the translation probability for translating a foreign sentence $f$ into English $e$ as
+Over the years many researchers tried to improve the quality of machine translations by using phrase based model. The align template model by \cite{W99-0604} can be considered as the initiation towards phrase based models. Phase based translation was used in a syntax based translation system by \cite{Yamada:2001:SST:1073012.1073079} which has been discussed earlier.A joint-probability model for phrase translation was introduced by \cite{Marcu:2002:PJP:1118693.1118711} and achieved more accurate translations produced using IBM
+Model 4.
+
+A novel phrase-based translation model and decoding algorithm was proposed by \cite{Koehn:2003:SPT:1073445.1073462} which enabled them to evaluate and compare several previously proposed phrase-based translation models. They designed a uniform framework to compare different other translation models. The model proposed by \cite{Koehn:2003:SPT:1073445.1073462} was based on the noisy channel model(\cite{Brown:1993:MSM:972470.972474}) and they used the Bayes rule to reformulate the translation probability for translating a foreign sentence $f$ into English $e$ as
 
 $$
 argmax_ep(e|f)= argmax_ep(f|e)p(e)
@@ -25,38 +105,35 @@ $$
          = argmax_ep(e|f)
 $$
 
+The phrase-based decoder developed by \cite{Koehn:2003:SPT:1073445.1073462} employed a beam search algorithm similar to the one by Jelinek (1998)  for the comparison of different phrase-based translation models.
 
+\subsection{Hierarchical Phrase-Based Translation}
 
+\cite{Chiang:2005:HPM:1219840.1219873} presented a  phrase-based machine translation model that used hierarchical phrases – phrases that contained subphrases. The basic phrase-based model was an instance of the noisy-channel approach by \cite{Brown:1993:MSM:972470.972474}, the other variations such as (Och and Ney, 2004; Koehn et al., 2003) had a distortion model that reordered phrases independently. The authors felt that there was a need of technique which capture translations whose scope was larger than few consecutive words, specifically in complex languages like Mandarin. The phrase-based translation worked well with phrase reordering but failed to accomplish inversion of two phrases within a complex sentence. They proposed the use of hierarchical phrases which consisted of both words and sub-phrases to address this problem. Their model was based on a weighted synchronous Context Free Grammar ( \cite{Aho:1969:SDT:1739930.1740037}).The model built partial translations using the hierarchical phrases and then combined them serially in a standard phrase-based model.  Instead of using the traditional noisy-channel approach , they used a more general log-liner model as proposed by \cite{Och:2002:DTM:1073083.1073133}.
 
-The phrase-based decoder developed by Koehn et al. (2022) employed a beam search algorithm similar to the one by Jelinek (1998)  for the comparison of different phrase-based translation models.
-\subsection{Syntax Based Translation}
-A syntax-based statistical translation model was proposed by Yamada et al (2001). Their model transformed a source-language parse tree into a target-language string by applying stochastic operations at each node. Those operations captured the linguistic differences such as word order and case marking. The model produced word alignments which were better those produced by IBM Model 5. [Reference]
+They evaluated their model on a Mandarin $\rightarrow$ English translation task and compared their model against Pharaoh (\citeauthor{10.1007/978-3-540-30194-3_13}, \citeyear{10.1007/978-3-540-30194-3_13}). Their experiments showed that hierarchical phrase pairs can be learned by the models without using any syntactically-annotated training data and can improve the translation accuracy significantly compared to the phrase-based systems. Though the hierarchical models encouraged the consolidation of syntactic information but failed to provide a statistically significant gain.
 
-They assumed that an English parse three $\varepsilon$  is transformed into a French sentence $f$. The English parse tree $\varepsilon$ consisted of nodes $\varepsilon_1$,$\varepsilon_2$,.. $\varepsilon_n$ and the French sentence consisted of French words $f_1,f_2,..,f_m$.
-The authors considered three random variables, \textbf{N}, \textbf{R}, and \textbf{T} as channel operations which were applied to each node. \textit{Insertion} \textbf{N} is an operation that inserts a French word just before or after the node and it can be either none, left or right. \textit{Reorder} \textbf{R} is an operation that is used to change the order of the children of the node. \textit{Translation} \textbf{T} is an operation which translates a terminal English leaf word into a French word. 
-\begin{figure}
-\includegraphics[width=\textwidth,,height=250pt]{figures/syntax1.png}
-\caption{: Viterbi Alignments: Yamata et al's model (left) and IBM Model 5 (right). Darker lines are judged more
-correct by humans.} \label{fig1}
-\end{figure}
-
-\begin{center}
-\begin{tabular}{ |c|c|c| } 
- \hline & Alignment ave. score & Perfect sents \\ 
- \hline Yamata et al Model & 0.582 & 10 \\ 
- \hline IBM Model 5 & 0.431 & 0 \\ 
+\begin{table}[h]
+\centering
+\begin{tabular}{ |c|c| } 
+ \hline System & BLEU  \\
+ \hline
+ Pharaoh & 0.2676  \\ 
+ hierarchical & 0.2877 \\ 
+  hierarchical+constituent & 0.2881 \\ 
  \hline
 \end{tabular}
-\end{center}
+\caption{Results on baseline system and hierarchical system. \cite{Chiang:2005:HPM:1219840.1219873}}\label{hbmtt}
+\end{table}
 
 \subsection{Moses and Factored Translation Model}
-Moses is an open-source implementation of the statistical machine translation developed by Koehn et al (2007). The statistical machine translate systems are trained on huge quantities of parallel bilingual data and larger quantities of monolingual data. The parallel data is collection of sentences in two different languages which is sentence aligned, that is the sentence in one language is matched with sentence in corresponding language. In Moses, the system takes parallel data for the training process and uses the co-occurrences of phrases to infer translation correspondences between two languages of interest. In phrase-based machine translation, these correspondences are essentially between ceaseless arrangements of words, whereas in hierarchical phrase-based machine translation or syntax-based translation, more structure is added to the correspondences. Apart from being an open-source toolkit for SMT, Moses extended the phrase-based translation with factors and confusion network decoding. The phrase-based model in statistical machine translation was limited to the mapping of small text chunks with no express utilization of etymological data, be it morphological, syntactic, 
+Moses is an open-source implementation of the statistical machine translation developed by \cite{Koehn:2007:MOS:1557769.1557821}. The statistical machine translate systems are trained on huge quantities of parallel bilingual data and larger quantities of monolingual data. The parallel data is collection of sentences in two different languages which is sentence aligned, that is the sentence in one language is matched with sentence in corresponding language. In Moses, the system takes parallel data for the training process and uses the co-occurrences of phrases to infer translation correspondences between two languages of interest. In phrase-based machine translation, these correspondences are essentially between ceaseless arrangements of words, whereas in hierarchical phrase-based machine translation or syntax-based translation, more structure is added to the correspondences. Apart from being an open-source toolkit for SMT, Moses extended the phrase-based translation with factors and confusion network decoding. The phrase-based model in statistical machine translation was limited to the mapping of small text chunks with no express utilization of etymological data, be it morphological, syntactic, 
 or on the other hand semantic. Previous researches showed that these additional sources of information are valuable when integrated into pre-processing or post-processing steps. Moses also integrated confusion network decoding, a mechanism which allowed translation of ambiguous input and enabled tighter integration of speech recognition and machine translation. The machine translation system examines a network of different word choices instead of passing along the one-best output of the recognizer. 
 \subsubsection{Factored Translation Model}
 The non-factored SMT such as phrase-based SMT typically dealt only with surface form of words and had one phrase table as shown in Figure 1. 
 \begin{figure}
 \includegraphics[width=\textwidth,,height=250pt]{figures/moses1.png}
-\caption{Non-factored Translation} \label{fig1}
+\caption{Non-factored Translation. Adapted from \cite{Koehn:2007:MOS:1557769.1557821}} \label{fig1}
 \end{figure}
 
 In factored translation model, the surface forms may be augmented with different factors, such as POS tags or lemma. This creates a factored representation of each word, Figure 2 [Refer].
@@ -461,3 +538,14 @@ The used a bi-directional GRU network with 500 hidden units in each direction as
 \end{table}
 
 \section{Related Work}
+\section{Conclusion}
+
+In this chapter, the background and State of the Art were discussed, in order to address the research question. The previous researches field of machine translation were presented with the focus on concepts and principles centered on this research pursuit.
+
+Next, the previous works in the field of Statistical Machine Translation was introduced and formally discussed. The evolution of Statistical Machine Translation from Word Based Models to Phrase based models were discussed in depth as it paves the base of this research.
+
+Finally, research within the area of Neural Machine Translation was discussed, focusing on the time-line of historical research and the latest innovations in the study of machine translations. Google's state of art neural machine translation was discussed in details as it is a major motivation for this research. These are studies that closely relate to this work in their concerns and aims.
+
+In concluding the State of the Art, the related works in the area of neural machine translations in Hindi - English is discussed. There appears a substantial gap in the area of neural machine translation in Hindi-English. While much investigation has been carried out, but most of these investigations were carried out using smaller corpora and using biased test sets.
+
+The goal of this work is to use neural machine translation on a larger Hindi-English corpora and produce better translations which are more generic. And subsequently, fine tuning the trained model using a new domain specific smaller corpus to produce better domain specific results.  

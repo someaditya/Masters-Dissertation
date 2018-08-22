@@ -36,14 +36,11 @@
 \documentclass[a4paper, 12pt, oneside]{report}         %% LaTeX2e document.
 \usepackage {tcdthesis}              %% Preamble.
 \usepackage{graphicx}
-\usepackage{cite}
 \usepackage{devanagari}
 \usepackage[utf8]{inputenc}
 \usepackage[english,hindi]{babel}
 \usepackage{amsmath}
-
-
-
+\usepackage{natbib}
 
 \mastersthesis                     %% Uncomment one of these; if you don't
 % \phdthesis                         %% use either, the default is \phdthesis.
@@ -128,7 +125,9 @@
 
 \begin{document}                                  %% BEGIN THE DOCUMENT
 \selectlanguage{english}
-\thesistitlepage                                  %% Generate the title page.
+\thesistitlepage     
+  
+%% Generate the title page.
 
 \thesisdeclarationpage                %% Generate the declaration page.
 
@@ -138,6 +137,9 @@
 
 \begin{thesisacknowledgments}                     %% Use this to write your
 ...ACKNOWLEDGMENTS...                          %% acknowledgments; it can be anything
+I would like to extend my sincerest thanks and appreciation to Kevin Koidl for his continuous motivation and immense guidance throughout the phase of research. Kevin consistently allowed this study to be much my own work, encouraging my ideas and development throughout the research, while always helping me in spots of difficulty, and steering me in the right direction whenever needed.
+
+To my Dad, who’s support is difficult to put into words, I must express my greatest gratitude for providing me with everything I could have ever needed, and his continuous encouragement throughout my years of study.This accomplishment would not have been possible without my Dad. Thank you Dad.
 \end{thesisacknowledgments}                       %% allowed in LaTeX2e par-mode.
 
 \begin{thesisabstract}                          %% the abstract for your thesis
@@ -163,8 +165,9 @@
   \include{chapter5}
   \include{chapter6}
 
-\begin{thebibliography}{ieeetr}                   %% Start your bibliography here; you can
-\bibliography{refs.bib}                               %% also use the \bibliography command
+\begin{thebibliography}{ieeetr}  %% Start your bibliography here; you can
+\bibliographystyle{plainnat} % We choose the "plain" reference style
+\bibliography{refs}                               %% also use the \bibliography command
 \end{thebibliography}                             %% to generate your bibliography.
 
 
