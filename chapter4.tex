@@ -1,7 +1,13 @@
 \chapter{Implementation}
+In this chapter, the implementation details are talked about. The technologies that used are described, alongside the justification for selecting them. While the system has coherently isolated components, to be specific a subsystem of Data Gathering, Neural Translation Model and a Visualization Interface, each with different design strategies and implementation approach.
+
+\begin{figure}[h]
+\includegraphics[width=\textwidth]{figures/maindesign.png}
+\caption{System Components} \label{system}
+\end{figure}
+
 \section{Data Gathering}
 \subsection{Dataset for Fine Tuning}
-\subsubsection{TED Talks}
 \begin{figure}
 \includegraphics[width=\textwidth]{figures/tedtalks.png}
 \caption{A side-by-side figure showing TED Talk transcripts in English and Hindi} \label{fig1}
@@ -37,8 +43,7 @@ Further the tokenizer in the library was used to tokenize the Hindi text and mak
 
 The Moses tokenizer comes with two perl scripts which takes two
 
-\subsection{Test Data}
-\subsubsection{Blog Content from Tripoto}
+\subsection{Domain specific Test Data}
 \subsubsection{Sumy}
 Sumy is an Open Source python library and python command line utility for extracting a summary from HTML pages or plain texts, developed by Miso Belica. The package also contains a simple evaluation framework for text summaries.The decision to use sumy was driven by a number of factors.Sumy is an extractive text summarizer.Extractive text summarization techniques perform summarization by extracting portions of texts and constructing a summary, while the abstractive techniques like Google's TextSum learn the internal language representation to generate more human-like summaries,
 and paraphrases the original text. Extractive text summarization makes more sense in the summarization of Blogs as it keeps the original text which highlights the author’s point of view and writing style. Secondly, the abstractive text summarization is technique is highly unfeasible considering the available infrastructure at this stage of research.Further, Sumy provides seven different summarization methods which gives a choice to choose the best summarization algorithm for the blog summarization. 
@@ -55,17 +60,75 @@ The methods are as follows:
 
 \begin{figure}
 \includegraphics[width=\textwidth]{figures/textsummary.png}
-\caption{Histogram of side-by-side scores on 500 sampled sentences from Wikipedia and news websites for a
-typical language pair, here English to Spanish (PBMT blue, GNMT red, Human orange). It can be seen that
-there is a wide distribution in scores, even for the human translation when rated by other humans, which
-shows how ambiguous the task is. It is clear that GNMT is much more accurate than PBMT.} \label{fig1}
+\caption{Figure depicting the summarization of Tripoto Blogs} \label{fig1}
 \end{figure}
 Tripoto is one of the biggest Travel Blogging Websites in the World. The method implements the Beautiful Soup library and fetches the list of 50 most popular blogs from the URL “$https://www.tripoto.com/trips$ “. The links to the respective blogs is written into a csv (comma separated values) file for the summarization.
 
-The method which implements the sumy library reads the csv file and creates a 5-sentence summary for each and every blog. After experimenting with LexRank, TextRank and Latent Semantic Analysis (LSA), LSA is finally used as the summarizer based on the quality of the summary. The Summary is then saved in a csv file corresponding to their blog links, which is further used by the Visual Interface. 
+The method which implements the sumy library reads the csv file and creates a 5-sentence summary for each and every blog. After experimenting with LexRank, TextRank and Latent Semantic Analysis (LSA), LSA is finally used as the summarizer based on the quality of the summary. The Summary is then saved in a csv file corresponding to their blog links, which is further used by the Visual Interface. The Google Translate API is used to generate the Hindi translation of the summaries which is used as the reference text for evaluation of the translation model.
 
 \section{Neural Translation Model}
-\subsection{Keras}
-Keras is an open source high-level neural networks API, which is written in Python and capable of running on top of TensorFlow, CNTK, and Theano.  It was designed to enable fast experimentation with deep neural networks and make neural network programming more user-friendly, modular and extensible. The decision to use Keras was driven by a number of factors. Firstly, Keras allows for easy and fast prototyping with minimal lines of code, it’s easier to code than TensorFlow.  In Keras, a model is represented as a sequence or a graph of standalone, fully-configurable modules that can be linked together with very limited restrictions. The neural layers, cost functions, optimizers, activation functions, regularization schemes are all standalone modules that can be combined easily to create new models. 
-\subsection{Seq2Seq Model}
+\subsection{PyTorch}
+PyTorch is an open source machine learning library for Python developed by \cite{paszke2017automatic}. PyTorch provides high level features like strong GPU acceleration and Dynamic Deep Neural Networks  built on a tape-based autograd system. The decision to use PyTorch was motivated by PyTorch implementation of OpenNMT(\citeauthor{opennmt},\citeyear{opennmt}) which is easily extensible and suitable for research. The decision to use OpenNMT-PyTorch for training the neural model has been discussed in Section \ref{sec:opennmt}.
+\subsection{Seq2Seq Model with Attention}
+The Seq2Seq model with Attention is well implemented by the OpenNMT Toolkit. The workflow of the Neural Translation Model is showed in Figure \ref{nmtwork}.
+
+\begin{figure}
+\includegraphics[width=\textwidth]{figures/nmtworkflow.png}
+\caption{Workflow of the Neural Translation Model} 
+\label{nmtwork}
+\end{figure}
+
+\subsubsection{Pre-Processing} 
+Pre-processing is one of the most important component of the Neural Translation Model.The preprocess.py requires the training and validation data from source and target language.The validation text files are required by the system to evaluate the converge of training.The preprocess.py is configured according to the design requirements. The size of vocabulary for source and target languages is set to 50K which is well suited for a training data having 1.49 million bilingual sentence pairs.After running the preprocessing.py, the following files are generated by the OpenNMT system:
+\begin{itemize}
+    \item \textbf{demo.train.pt} A serialized PyTorch file which contains training data.
+    \item \textbf{demo.valid.pt} A serialized PyTorch file which contains validation data.
+    \item \textbf{demo.vocab.pt} A serialized PyTorch file which contains vocabulary data.
+\end{itemize}
+
+These indices are used by the OpenNMT-PyTorch system throughout the process of training and testing. 
+\subsubsection{Training}
+The Training sub-component consists of train.py which trains the model with the training data from the corpus. The default training configuration consists of 2-layer LSTM with 500 hidden units on both the encoder/decoder. The training component can be configured according to the design requirements. The default word embedding size of 500 for both source and target is maintained throughout the implementation. The training models were implemented using either Bidirectional RNN (\cite{45610}) or LSTMs(\cite{NIPS2014_5346}). \cite{DBLP:journals/corr/VaswaniSPUJGKP17} proposed the Transformer model which is based solely on attention-mechanisms and is different from the tradition Seq2Seq. But the Transformer model was not implemented in this research as the focus was to improve the translations only using LSTM. The following models were implemented using different configurations,
+\begin{itemize}
+    \item \textbf{OpenNMT-Model-1} Consisted of 4-layer LSTM on the Encoder side, and 4-layer LSTM on the Decoder side, RNN size of 500 units, Attention mechanism as Luong, SGD Optimizer with learning rate of 0.001 and Batch size of 64. 
+    \item \textbf{OpenNMT-Model-2} Consisted of 4-layer LSTM on the Encoder side, and 4-layer LSTM on the Decoder side, RNN size of 500 units, Attention mechanism as Luong, Adam Optimizer with learning rate of 0.001 and Batch size of 64. 
+    \item \textbf{OpenNMT-Model-3}  Consisted of 2-Layer Bidirectional-RNN on the Encoder side, and 2-layer LSTM on the Decoder side, RNN size of 500 hidden units, Attention mechanism as Luong, SGD Optimizer with learning rate of 0.1 and Batch size of 64. This implementation was motivated by the use of Bi-directional RNN to improve translation quality in Google's NMT (\cite{45610}).
+    \item \textbf{OpenNMT-Model-4}  Consisted of 2-Layer Bidirectional-RNN on the Encoder side, and 2-layer LSTM on the Decoder side, RNN size of 500 hidden units, Attention mechanism as Luong, Adam Optimizer with learning rate of 0.001 and Batch size of 64. This implementation was influenced by \cite{DBLP:journals/corr/abs-1712-07628}'s research which concluded that Adam optimizer performs better than SGD in the initial phases of training.
+    \item \textbf{OpenNMT-Model-5}  Consisted of 2-Layer Bidirectional-RNN on the Encoder side, and 2-layer LSTM on the Decoder side, RNN size of 1000 units, Attention mechanism as Luong, SGD Optimizer with learning rate of 0.1 and Batch size of 64.\cite{DBLP:journals/corr/BaroneHSHB17} showed that Deep RNNs obtain better translations though they reduce the training speed by significant margin, so the RNN size was increased for this Model.
+    \item \textbf{OpenNMT-Model-6} Consisted of 2-layer Bidirectional-RNN on the Encoder side, and 2-layer LSTM on the Decoder side, RNN size of 1000 units, Attention mechanism as Luong, Adam Optimizer with learning rate of 0.001 and Batch size of 64. Its a re-implementation of OpenNMT-Model-5 with Adam optimizer motivated by the performance of Adam optimizer in OpenNMT-Model-4. 
+    
+\end{itemize}
+
+These models were trained on a Nvidia K80 GPU for 100K steps.The OpenNMT system calculated the training accuracy and perplexity every 50 steps whereas the validation accuracy and perplexity was calculated every 10K steps. The translation models were saved every 5K steps for further re-training. 
+
+\subsubsection{Translating}
+The model generated in the previous step is used by translate.py to translate the source text to generate the pred.txt in the target language. The translate.py requires the src-test.txt and the trained model model-step$\_$100000.pt to  translate the source files to the target language. 
+
+\subsection{Back Translation using Monolingual Corpus}
+\cite{DBLP:journals/corr/SennrichHB15a} suggested methods for improving the translation quality by making use of monolingual data for low-resource language sources. As discussed before, The IIT-Bombay Hindi Parallel Corpus contains around 1.49 million sentence pairs which is little less for creating optimal neural translation models. This problem can be addressed using the monolingual corpus.\cite{DBLP:journals/corr/SennrichHB15a} suggested two methods to improve the translation quality, first by using dummy source sentences and second, by synthetic source sentences. The results from their experiments showed that the first method is not very efficient and doesn't have much significance on the translation quality. The second method is called back-translation which involves automatic translation of
+the monolingual target text into the source language. Then this synthetic source text is paired with the original monolingual target text and added to the human generated parallel training data. The results from their experiments showed that there was substantial improvement on WMT 15 English $\rightarrow$ German translation. 
+
+The IIT Bombay Hindi Monolingual Corpus which is mentioned in \ref{sec:mono} has around 45 million sentences. Creating Back-translations for such a huge monolingual corpus requires huge amount of GPU power which was not feasible for this research work. So, a fraction of the monolingual corpus, 50000 sentences were used for creating back translations in English.Then the Hindi monolingual corpus and the English back-translations were integrated with the parallel data for re-training of the model.
+
+\subsection{Fine-Tuning with Domain Specific Training Data}
+The process of fine-tuning involves the re-training of the pre-trained model with domain specific training data. The process is shown in Figure \ref{nmtwork1}. This is a complete re-iteration of the entire training process but with new domain specific data.
+\begin{itemize}
+    \item \textbf{preprocess.py}
+    \item\textbf{train.py}
+    \item\textbf{translate.py}
+\end{itemize}
+
+\begin{figure}[h]
+\includegraphics[width=\textwidth]{figures/nmtworkflow1.png}
+\caption{Workflow of the fine-tuning process} 
+\label{nmtwork1}
+\end{figure}
+
 \section{Visual Interface}
+The Visual Interface constitutes a simple front end interface component, and is constructed using web application technologies - HTML, CSS, and Javascript to create the static website for visualization.
+
+HTML and CSS are used in combination for mark up and style information. Javascript is used to access the Data Store which contains the translations of the summaries of the blogs.
+
+\subsection{Visual Interface Landing Page}
+\section{Summary}
+Chapter Four discussed about the various technology decisions made in creating the system. The chapter discussed in details the implementation of domain-specific corpus generation, domain-specific test data generation, neural translation model, and the visualization interface.
