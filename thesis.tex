@@ -43,6 +43,7 @@
 \usepackage{amsmath}
 \usepackage{natbib}
 \usepackage{polyglossia}
+\usepackage{hyperref}
 
 \setdefaultlanguage{english}
 \setotherlanguage{sanskrit}
@@ -69,12 +70,12 @@
                                      %% minimum spacing accepted by the
                                      %% Graduate School.
 
-\renewcommand{\thesisauthor}{...}         %% Your official TCD name.
-\renewcommand{\thesismonth}{...}                  %% Your month of graduation.
-\renewcommand{\thesisyear}{...}                      %% Your year of graduation.
-\renewcommand{\thesistitle}{...}            %% The title of your thesis; use mixed-case.
-\renewcommand{\thesisauthorpreviousdegrees}{...}  %% Your previous degrees, abbreviated; separate multiple degrees by commas.
-\renewcommand{\thesissupervisor}{...}      %% Your thesis supervisor; use mixed-case and don't use any titles or degrees.
+\renewcommand{\thesisauthor}{Some Aditya Mandal}         %% Your official TCD name.
+\renewcommand{\thesismonth}{August}                  %% Your month of graduation.
+\renewcommand{\thesisyear}{2018}                      %% Your year of graduation.
+\renewcommand{\thesistitle}{Neural Machine Translation for Hindi to English in Tourism Domain}            %% The title of your thesis; use mixed-case.
+\renewcommand{\thesisauthorpreviousdegrees}{ , B.Eng}  %% Your previous degrees, abbreviated; separate multiple degrees by commas.
+\renewcommand{\thesissupervisor}{Dr. Kevin Koidl}      %% Your thesis supervisor; use mixed-case and don't use any titles or degrees.
 % \renewcommand{\thesiscosupervisor}{}                %% Your PhD. thesis co-supervisor; if any.
 
 % \renewcommand{\thesiscommitteemembera}{}
@@ -105,7 +106,7 @@
                                      %% for \mastersthesis.  Provide the
                                      %% correct FULL OFFICIAL name of
                                      %% the degree.
-\renewcommand{\thesisdegreestream}{ (Data Science)}
+\renewcommand{\thesisdegreestream}{ (Intelligent Systems)}
                                      %% Default is empty. This is used on
                                      %% the title page of the thesis.
 
@@ -141,18 +142,23 @@
 %\thesisdedicationpage                             %% Generate the dedication page.
 
 \begin{thesisacknowledgments}                     %% Use this to write your
-...ACKNOWLEDGMENTS...                          %% acknowledgments; it can be anything
+%% acknowledgments; it can be anything
 I would like to extend my sincerest thanks and appreciation to Kevin Koidl for his continuous motivation and immense guidance throughout the phase of research. Kevin consistently allowed this study to be much my own work, encouraging my ideas and development throughout the research, while always helping me in spots of difficulty, and steering me in the right direction whenever needed.
 
 To my Dad, who’s support is difficult to put into words, I must express my greatest gratitude for providing me with everything I could have ever needed, and his continuous encouragement throughout my years of study.This accomplishment would not have been possible without my Dad. Thank you Dad.
 \end{thesisacknowledgments}                       %% allowed in LaTeX2e par-mode.
 
 \begin{thesisabstract}                          %% the abstract for your thesis
-...ABSTRACT...
+
+
+
 \end{thesisabstract}
 
 \begin{thesissummary}                           %% The summary page for your thesis
-...SUMMARY...	
+
+
+
+
 \end{thesissummary}
 
 
@@ -170,10 +176,10 @@ To my Dad, who’s support is difficult to put into words, I must express my gre
   \include{chapter5}
   \include{chapter6}
 
-\begin{thebibliography}{ieeetr}  %% Start your bibliography here; you can
+
 \bibliographystyle{plainnat} % We choose the "plain" reference style
 \bibliography{refs}                               %% also use the \bibliography command
-\end{thebibliography}                             %% to generate your bibliography.
+                           %% to generate your bibliography.
 
 
 \addcontentsline {toc}{chapter}{Appendices}       %% Force Appendices to appear in contents

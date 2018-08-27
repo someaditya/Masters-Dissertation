@@ -1,5 +1,51 @@
 \chapter{Conclusion}
+Chapter Six concludes the dissertation. Its motivation is to show that the research objectives depicted in Chapter One have been met, to express the research contribution this work represents, and to discuss the future work prospects.
+
 \section{Objective Assessment}
+\subsection{Creation of English to Hindi Neural Translation Model}
+\textbf{Research Objective} \textit{To create a baseline neural translation model for English to Hindi translation which has the ability to generate above average quality translations by using a large parallel corpus.
+}
+
+The primary objective of this dissertation was to choose a large English-Hindi Parallel Corpus and create a neural translation model which can be used as a baseline model for English to Hindi translations. The initial step in training of quality neural translations model require large parallel corpus. This was addressed by selecting the largest publicly available Hindi-English Corpus which is the IIT Bombay English-Hindi Corpus. 
+
+Then in the next phase, the English to Hindi neural translation model was trained using the training data from the IIT Bombay English-Hindi Corpus. Several different models with different configurations based on previous researches were experimented and finally the best performing model was selected as the baseline model. The baseline model obtained an above average BLEU score during evaluation which was an adequate step towards addressing the research question.
+
+\subsection{Utilizing a Hindi Monolingual Corpus for Re-training}
+\textbf{Research Objective} \textit{To Fine Tune (Re-Train) the neural translation model by utilizing  a  Hindi Monolingual Corpus.}
+
+The secondary objective of this research was to utilize a Hindi monolingual corpus for fine-tuning the baseline neural translation model. A technical approach was needed which allowed the use of monolingual corpus in neural translation models. After a brief study of different approaches, the Back Translation was selected for utilizing a monolingual corpus for fine-tuning the baseline model.
+
+For this work , the IIT-Bombay Monolingual Corpus was initially used for generating synthetic English sentences for human generated Hindi sentences. A reverse Hindi to English neural translation model was trained and the sentences from the monolingual corpus were translated using the same model. The machine generated synthetic English sentences along with the original Hindi sentences were used to re-train the baseline English to Hindi translation model. The results showed a marginal increment in the BLEU scores which was probably due to the less number of synthetic data considered for the experiment.
+
+\subsection{Creation of Domain Specific Corpus}
+\textbf{Research Objective} \textit{To create a new Domain Specific Corpus for the Tourism Domain.}
+
+To address the research question there was a need to create a new domain specific corpus for the tourism domain. The create the domain specific corpus , the human translated transcripts from TED Talks website were used which ensure gold quality data. As the corpus of domain specific test data was created using the sentences from tourism blogs , the training corpus based on TED Talks Website was justified as both the mediums, Tripoto travel blogs and TED Talks contains similar kind of texts, that is experiences of people which are generally in same form of speech. 
+
+The training corpus that was generated from TED talks was of good quality and it provided an adequate foundation for the research question to be addressed.  
+
+\subsection{Domain specific Fine-Tuning}
+\textbf{Research Objective} \textit{To Fine Tune (Re-Train) the neural translation model with Domain Specific Training Data.
+}
+
+In the pursuit of research's goal, the domain specific fine-tuning (re-training) of the neural translation model was a major aim.The pre-trained neural model (baseline with back-translated training) was re-trained using the domain specific corpus that was created as part of this research. The corpus contained around 81K sentence pairs, and the re-training showed a considerable improvement of BLEU scores on the original test data. 
+
+
+\subsection{Final Remarks }
+\textbf{Research Objective} \textit{To Test and Evaluate the neural translation model with Domain Specific Test Data from the Domain Specific Corpus.}
+
+The significant result of this research has been a demonstration of the potential that exists inside the study of neural machine translation, which implies that the models trained with domain specific data can obtain better quality translations than baseline models.
+
 \section{Research Contribution}
 \section{Future Work}
+There are energizing opportunities for future work, potential expansions to the research attempted in this thesis.
+\subsection{Implementing Transformer}
+\subsection{Training on high end GPU System}
+\subsection{Human Evaluation}
 
+During the evaluation phase, when the BLEU scores and the translation quality of the translated sentences were compared it highlighted that the BLEU scores doesn't actually represent good quality translation. A good BLEU score doesn't guarantee a great quality translation or a bad BLEU score doesn't guarantee a bad quality translation. So the experiments suggest there is a need for the formulation of a better translation metric.
+
+As part of future work, it would be beneficial if a human evaluation method is devised to judge the quality of translation. It could be typically a rating website which have the text in English, reference text in Hindi and translated text in Hindi. The ratings could be from the range of zero to five, with zero being a \textit{nonsense translation} while five being a \textit{perfect translation}. And then the human evaluation can be related with the BLEU scores to judge the quality of translation.  
+
+\subsection{Web Application}
+As well as research opportunities, 
