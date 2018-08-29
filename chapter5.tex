@@ -121,7 +121,7 @@ Six different models were experimented with to select best baseline model for th
   \hline  IITB-MTG &  RNNS2S(WAT 2017) & 12.23\\
   IITB-MTG & ConvS2S(WAT 2017) & 11.73\\
    XMUNLP-Baseline &  dl4mt tutorial(WAT 2017) & 13.69\\
-  \hline  Google & Google NMT & 12.23\\
+  \hline  Google & Google NMT & 24.56\\
   \hline  OpenNMT-Model-1 &  4 Layer LSTM Encoder Decoder, SGD & 9.88\\
   OpenNMT-Model-2 & 4 Layer LSTM Encoder Decoder, Adam & 10.09\\
   OpenNMT-Model-3 & 2 Layer LSTM Bi-RNN Encoder Decoder, SGD & 12.89 \\
@@ -136,7 +136,7 @@ Six different models were experimented with to select best baseline model for th
 
 The Back Translation method proposed by \cite{DBLP:journals/corr/SennrichHB15a} was described in Section \ref{backtrans}. Several researches such as \cite{W18-2703} showed how back translation method is effective in case of low language resources but \cite{DBLP:journals/corr/abs-1804-06189}'s research showed how adding too much synthetic data in to the corpus  can deteriorate the BLEU scores.\cite{W17-5707} added 2.5 million synthetic sentences which were created from IIT Bombay Hindi Monolingual Corpus, re-trained their baseline model and improved their BLEU score to 19.79 from 13.69 .For this research , 50,000 synthetic English sentences were used with human generated Hindi sentences from the IIT-Bombay Monolingual Corpus. The decision to use lesser synthetic data was motivated by the fact that, it would have taken more than 24 hours of GPU power to create the synthetic sentences and the training for minimal 100K steps would have taken around 45 hours of GPU training.
 
-Fig \ref{bleutable2} shows the results of the experimentation with the baseline neural translation model. The Back-Translation improved the BLEU score by 0.05 which in-significant, which may be due its less size of 50K compared to 1.5million. The next phase was training domain specific corpus. The Baseline+Back-Translation model was fine-tuned (re-trained) using the TED Talks Hindi-English Corpus. The TED Talks Hindi-English Corpus have around 81K sentences pairs and the model was re-trained for 100K steps which is around 80 epochs. The domain specific training showed an improvement of BLEU score to 14.72.
+Fig \ref{bleutable2} shows the results of the experimentation with the baseline neural translation model. The Back-Translation improved the BLEU score by 0.05 which in-significant, which may be due its less size of 50K compared to 1.5million. The next phase was training domain specific corpus. The Baseline+Back-Translation model was fine-tuned (re-trained) using the TED Talks Hindi-English Corpus. The TED Talks Hindi-English Corpus have around 81K sentences pairs and the model was re-trained for 100K steps which is around 80 epochs. The domain specific training with cross domain specific training data showed an improvement of BLEU score to 14.72.
 
 \begin{table}[h!]
 \centering
@@ -153,7 +153,7 @@ Fig \ref{bleutable2} shows the results of the experimentation with the baseline 
 \label{bleutable2}
 \end{table}
 
-The final phase of the evaluation process was evaluating the models for the domain specific test data. The domain specific test data consisted of 580 English sentences from the Tripoto Blogs. The Baseline English to Hindi model scored 19.48 BLEU on the test data , the back-translations improved the scores slightly to 19.98. The final domain specific translation model obtained a BLEU score of 22.47 which is a significant improvement. These results of the final phase of evaluation addressed the research question posed in the dissertation. For Domain specific translations, domain specific training can improve the BLEU scores by a great margin. 
+The final phase of the evaluation process was evaluating the models for the domain specific test data. The domain specific test data consisted of 580 English sentences from the Tripoto Blogs. The Baseline English to Hindi model scored 19.48 BLEU points on the test data , the back-translations improved the scores slightly to 19.98. The final domain specific translation model which was trained with cross-domain specific training data obtained a BLEU score of 22.47 which is a significant improvement. These results of the final phase of evaluation addressed the research question posed in the dissertation. For Domain specific translations, re-training a model with closely related cross-domain specific data can improve the BLEU scores by a great margin. 
 \begin{table}[h!]
 \centering
  \begin{tabular}{ |c|c| } 
@@ -188,4 +188,4 @@ In this part, the evaluation approach was first discussed, which encouraged the 
 
 In the Second phase, other implementation such as Back-Translation and Domain Specific Training was taken into consideration, and the performance of the model were evaluated.
 
-The last part of the evaluation considered the evaluation of the previously trained models on the domain specific test data, and and its part in noting the research question posed by the dissertation. The outcomes showed that for domain specific translations , domain specific training can improve the BLEU scores by a significant margin.
+The last part of the evaluation considered the evaluation of the previously trained models on the domain specific test data, and and its part in noting the research question posed by the dissertation. The outcomes showed that for domain specific translations , cross-domain training can improve the BLEU scores by a significant margin.

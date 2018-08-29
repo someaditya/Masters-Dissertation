@@ -105,7 +105,7 @@ $$
          = argmax_ep(e|f)
 $$
 
-The phrase-based decoder developed by \cite{Koehn:2003:SPT:1073445.1073462} employed a beam search algorithm similar to the one by Jelinek (1998)  for the comparison of different phrase-based translation models.
+The phrase-based decoder developed by \cite{Koehn:2003:SPT:1073445.1073462} employed a beam search algorithm similar to the one by \citep{Jelinek76continuousspeech}  for the comparison of different phrase-based translation models.
 
 Their results showed that phrase based translation gave better performance than the word based models by using lexical weighting of phrases and a phrase extraction heuristic.
 
@@ -163,7 +163,7 @@ In Moses, they implemented the confusing network decoding as discussed in \citep
 
 Statistical Machine Translation generated translation using statistical models whose parameters are derived from the analysis of bilingual text corpora. 
 
-There were several challenges faced in statistical machine translation, which are as follows:
+There were several challenges faced in statistical machine translation, which are as follows\citep{wiki:smt}:
 
 \begin{itemize}
     \item \textbf{Lack of Large Parallel Corpora}   Statistical Machine Translation systems need large sets of parallel data for the translation task. But the unavailability of large corpora in low resource language posed a challenge to the SMT and it affected the efficiency of translation models in several low resource languages.
@@ -523,7 +523,7 @@ The model in Neural Monkey is defined by different model parts such as encoders 
 In order to validate the Neural Monkey’s performance the authors did a sanity check evaluation on the architechture introduced by \cite{DBLP:journals/corr/BahdanauCB14} which became the standard baseline model in NMT research. 
 
 
-They used a bi-directional GRU network with 500 hidden units in each direction as the encoder and for decoder they used an RNN decoder with 1000 units in the hidden layer. They used a simple ‘tanh’ projection instead of max-out projection as used in the original model. The original paper used Adadelta \citep {DBLP:journals/corr/abs-1212-5701} optimizer, whereas for this comparative study they used Adam \citep{DBLP:journals/corr/KingmaB14} . The comparison of the models is shown in Table. 
+They used a bi-directional GRU network with 500 hidden units in each direction as the encoder and for decoder they used an RNN decoder with 1000 units in the hidden layer. They used a simple ‘tanh’ projection instead of max-out projection as used in the original model. The original paper used Adadelta \citep {DBLP:journals/corr/abs-1212-5701} optimizer, whereas for this comparative study they used Adam \citep{DBLP:journals/corr/KingmaB14} . The comparison of the models is shown in Table \ref{neumonk}. 
 
 \begin{table}[h!]
 \centering
@@ -537,6 +537,7 @@ They used a bi-directional GRU network with 500 hidden units in each direction a
   \hline
  \end{tabular}
 \caption{Results achieved by Neural Monkey on the WMT14 News Task French to English dataset with the number epochs \citep{neuralmonk}.}
+\label{neumonk}
 \end{table}
 
 \section{Related Work}

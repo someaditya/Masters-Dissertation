@@ -68,7 +68,7 @@
 \renewcommand{\thesisauthor}{Some Aditya Mandal}         %% Your official TCD name.
 \renewcommand{\thesismonth}{August}                  %% Your month of graduation.
 \renewcommand{\thesisyear}{2018}                      %% Your year of graduation.
-\renewcommand{\thesistitle}{Neural Machine Translation for Hindi to English in Tourism Domain}            %% The title of your thesis; use mixed-case.
+\renewcommand{\thesistitle}{Neural Machine Translation for English to Hindi in Tourism Domain}            %% The title of your thesis; use mixed-case.
 \renewcommand{\thesisauthorpreviousdegrees}{ , B.Eng}  %% Your previous degrees, abbreviated; separate multiple degrees by commas.
 \renewcommand{\thesissupervisor}{Dr. Kevin Koidl}      %% Your thesis supervisor; use mixed-case and don't use any titles or degrees.
 % \renewcommand{\thesiscosupervisor}{}                %% Your PhD. thesis co-supervisor; if any.
@@ -135,23 +135,28 @@
 
 \begin{thesisacknowledgments}                     %% Use this to write your
 %% acknowledgments; it can be anything
-I would like to extend my sincerest thanks and appreciation to Kevin Koidl for his continuous motivation and immense guidance throughout the phase of research. Kevin consistently allowed this study to be much my own work, encouraging my ideas and development throughout the research, while always helping me in spots of difficulty, and steering me in the right direction whenever needed.
+I would like to extend my sincerest thanks and appreciation to Dr. Kevin Koidl for his continuous motivation and immense guidance throughout the phase of research. Kevin consistently allowed this study to be much of my own work, encouraging my ideas and development throughout the research, while always helping me in spots of difficulty, and steering me in the right direction whenever needed.
 
 To my Dad, who’s my biggest inspiration in life, I must express my greatest gratitude for providing me with everything I could have ever needed, and his continuous encouragement throughout my years of study.This accomplishment would not have been possible without my Dad. Thank you Dad.
 
-To my Mom, who's not here to witness this moment.I will be forever grateful for her influence on my life, I owe my entire education to her, and am sorry that she has not lived to see me graduate. Thank you Mom.
+To my Mom, who's not here to witness this moment.I will be grateful to her forever, for her influence on my life, I owe my entire education to her, and am sorry that she has not lived to see me graduate. Thank you Mom.
 \end{thesisacknowledgments}                      %% allowed in LaTeX2e par-mode.
 
 \begin{thesisabstract}                          %% the abstract for your thesis
-Hindi is one of the major languages of the world, which is spoken by about 700 million people around the world. In India, more than 550 million people speak Hindi, whereas the English speakers are limited to around 12\%. In this modern digital age,most of the digital content that is produced in India and the rest of the World is predominately in English. This leaves a considerable amount of Indian population to be digitally neglected as there are limited digital content in their native language or the most widely used language Hindi. So, there is an immense potential for the English to Hindi neural machine translation which  can enable automatic translations for millions of existing digital content which are in English.The recent development of deep neural networks have enabled the machine translation to attend state of art by creating translations which are almost like human generated translations.There is an immense opportunity to explore the English to Hindi Neural Machine Translation and the domain adaptation of neural translation model to generate domain specific translations. For this research, the tourism domain is selected due to the observation that there is a considerable lack of digital content in the domain.This work creates a English-Hindi Neural Machine Translation Model which generate above average translations.Domain Specific Fine-tuning of the pre-trained model is done to extend the domain adaptability of the model. These models are tested and evaluated on domain specific data using the BLEU scores to get the inference about translation quality. This dissertation illuminates the fundamentals of neural machine translation and draws inference about their domain adaptability. 
-
+Hindi is one of the major languages of the world, which is spoken by over 700 million people around the world. In India, more than 550 million people speak Hindi, whereas the English speakers are limited to around 12\%. In this modern digital age, most of the digital content that is produced in India and the rest of the World is predominately in English. This leaves a considerable amount of Indian population to be digitally neglected as there are limited digital content in their native language or the most widely used language Hindi. This results in an immense potential for the English to Hindi neural machine translation by enabling automatic translations for millions of existing digital English articles. The recent development of deep neural networks enabled machine translation to create translations that are close to human generated translations. There is an immense opportunity to explore the English to Hindi Neural Machine Translation and the domain adaptation of neural translation model by generating domain specific translations. In this research, the tourism domain was chosen based on considerable lack of translated content in this domain. To overcome this shortcoming this work creates a English-Hindi Neural Machine Translation Model which generate above average translations. Furthermore, domain Specific Fine-tuning of the pre-trained model is conducted In order to extend the domain adaptability of the model. All models are tested and evaluated on domain specific data using the BLEU scores. This dissertation report presents the fundamentals of neural machine translation and draws conclusions about their domain specific adaptability.
 
 
 
 \end{thesisabstract}
 
 \begin{thesissummary}                           %% The summary page for your thesis
-...SUMMARY...	
+
+This work targets the English to Hindi machine translation using the Neural Machine Translation Models. It is part of the ongoing efforts within Neural Machine Translation research, where studies strive to understand the use of Deep Neural Networks to create automatic machine translations which are on par with human translations.
+
+This research is focused on improving the quality of English to Hindi translations by applying a novel approach to training and using Neural Machine Translation Models. For this a gap in the State of the Art was discussed leading to the conclusion that there hasn't been much focus on English to Hindi translation. To overcome this gap, this research considers the huge Hindi speaking population of India and the lack of digital content in Hindi, and thus points to a need for English to Hindi neural machine translation.
+
+This research establishes that the monolingual corpora from the target language can be utilized for low resource language pairs to influence the quality of translations. This work uses a small amount Hindi monolingual data to generate synthetic English sentences, which are then utilized for the fine-tuning of the baseline translation model. The presented novel approach  can be applied in the adaptation of the back-translation method for different low-resource language pairs. The research illustrates that domain specific training of a neural translation model with cross-domain specific training data leads to domain adaptation. The domain specific fine-tuning data, which consisted transcripts from TED Talks, was used to fine-tune the translation model. It was tested with the test data consisting of sentences extracted from travel blogs. The results of the experiments indicated that a cross-domain trained neural translation model performs well on the in-domain data, and subsequently generates above average quality translations. In a broader perspective this research bridges the identified gap, of a lacking English to Hindi focus, in the State of Art of Machine Translation by creating a new baseline translation model for large English-Hindi corpus leading to better than average results.
+	
 \end{thesissummary}
 
 
