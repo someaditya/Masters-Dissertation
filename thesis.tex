@@ -36,17 +36,12 @@
 \documentclass[a4paper, 12pt, oneside]{report}         %% LaTeX2e document.
 \usepackage {tcdthesis}              %% Preamble.
 \usepackage{graphicx}
-\usepackage{devanagari}
-\usepackage{fontspec}
 \usepackage[utf8]{inputenc}
-%\usepackage[english,hindi]{babel}
 \usepackage{amsmath}
 \usepackage{natbib}
-\usepackage{polyglossia}
 \usepackage{hyperref}
 
-\setdefaultlanguage{english}
-\setotherlanguage{sanskrit}
+
 
 \mastersthesis                     %% Uncomment one of these; if you don't
 % \phdthesis                         %% use either, the default is \phdthesis.
@@ -128,12 +123,9 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-
 \begin{document}                                  %% BEGIN THE DOCUMENT
-\selectlanguage{english}
-\thesistitlepage     
-  
-%% Generate the title page.
+
+\thesistitlepage                                  %% Generate the title page.
 
 \thesisdeclarationpage                %% Generate the declaration page.
 
@@ -145,20 +137,21 @@
 %% acknowledgments; it can be anything
 I would like to extend my sincerest thanks and appreciation to Kevin Koidl for his continuous motivation and immense guidance throughout the phase of research. Kevin consistently allowed this study to be much my own work, encouraging my ideas and development throughout the research, while always helping me in spots of difficulty, and steering me in the right direction whenever needed.
 
-To my Dad, who’s support is difficult to put into words, I must express my greatest gratitude for providing me with everything I could have ever needed, and his continuous encouragement throughout my years of study.This accomplishment would not have been possible without my Dad. Thank you Dad.
-\end{thesisacknowledgments}                       %% allowed in LaTeX2e par-mode.
+To my Dad, who’s my biggest inspiration in life, I must express my greatest gratitude for providing me with everything I could have ever needed, and his continuous encouragement throughout my years of study.This accomplishment would not have been possible without my Dad. Thank you Dad.
+
+To my Mom, who's not here to witness this moment.I will be forever grateful for her influence on my life, I owe my entire education to her, and am sorry that she has not lived to see me graduate. Thank you Mom.
+\end{thesisacknowledgments}                      %% allowed in LaTeX2e par-mode.
 
 \begin{thesisabstract}                          %% the abstract for your thesis
+Hindi is one of the major languages of the world, which is spoken by about 700 million people around the world. In India, more than 550 million people speak Hindi, whereas the English speakers are limited to around 12\%. In this modern digital age,most of the digital content that is produced in India and the rest of the World is predominately in English. This leaves a considerable amount of Indian population to be digitally neglected as there are limited digital content in their native language or the most widely used language Hindi. So, there is an immense potential for the English to Hindi neural machine translation which  can enable automatic translations for millions of existing digital content which are in English.The recent development of deep neural networks have enabled the machine translation to attend state of art by creating translations which are almost like human generated translations.There is an immense opportunity to explore the English to Hindi Neural Machine Translation and the domain adaptation of neural translation model to generate domain specific translations. For this research, the tourism domain is selected due to the observation that there is a considerable lack of digital content in the domain.This work creates a English-Hindi Neural Machine Translation Model which generate above average translations.Domain Specific Fine-tuning of the pre-trained model is done to extend the domain adaptability of the model. These models are tested and evaluated on domain specific data using the BLEU scores to get the inference about translation quality. This dissertation illuminates the fundamentals of neural machine translation and draws inference about their domain adaptability. 
+
 
 
 
 \end{thesisabstract}
 
 \begin{thesissummary}                           %% The summary page for your thesis
-
-
-
-
+...SUMMARY...	
 \end{thesissummary}
 
 
@@ -177,9 +170,9 @@ To my Dad, who’s support is difficult to put into words, I must express my gre
   \include{chapter6}
 
 
-\bibliographystyle{plainnat} % We choose the "plain" reference style
-\bibliography{refs}                               %% also use the \bibliography command
-                           %% to generate your bibliography.
+
+\bibliographystyle{agsm} % We choose the "plain" reference style
+\bibliography{refs}                            %% to generate your bibliography.
 
 
 \addcontentsline {toc}{chapter}{Appendices}       %% Force Appendices to appear in contents
@@ -193,3 +186,7 @@ To my Dad, who’s support is difficult to put into words, I must express my gre
 
 
 \end{document}                                    %% END THE DOCUMENT
+
+
+
+

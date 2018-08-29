@@ -1,7 +1,19 @@
 
 \chapter{Introduction}
+In this chapter, the motivation driving the research is introduced. The research question, the objectives for the research are identified along with the potential research challenges that may emerge. At the last, a technical approach is proposed for the research and a dissertation outline is provided which gives a view of the overall structure of the document.
 \section{Motivation}
+Hindi is one of the major languages of the world, which is mostly used in the Indian subcontinent, and is perceived as a local language in Mauritius, Trinidad and Tobago, Guyana, and Suriname. Also, it has a official language status in India and it is the most widely used language in India. As indicated by the 2001 Census of India\footnote{\url{http://www.censusindia.gov.in/Census_Data_2001/India_at_glance/glance.aspx},accessed:25.08.2018}, Hindi has 422 million native speakers and more than 500 million aggregate speakers (\citeauthor{ wiki:hindi}, \citeyear{ wiki:hindi}). It is additionally an official language of the Union Government of India along with English and also has significant importance in Indian states like Uttar Pradesh, Bihar, Rajasthan, Himachal Pradesh and so forth. Numerous languages and dialects in the Gangetic plains of India are closely associated with Hindi e.g.Bhojpuri, Awadhi, Maithili,etc. Hindi is also spoken by a large number of Madhesis from Nepal. The official language of Pakistan, Urdu is mutually intelligible with Hindi apart from a dedicated vocabulary.Hindi is also the fourth-most spoken-language on the planet, third-most spoken language alongside Urdu (both are registers of the Hindustani language) which is around 700 million total speakers \footnote{\url{https://www.babbel.com/en/magazine/the-10-most-spoken-languages-in-the-world/},    accessed:25.08.2018}. Interestingly, English is spoken by just around 125 million individuals  in India which around 12.18\% of the total population(\citeauthor{ wiki:english}, \citeyear{ wiki:english}).  
+
+
+The most of the digital content that is produced in India and the rest of the World is predominately in English\footnote{\url{https://www.internetworldstats.com/stats7.htm/}, accessed:25.08.2018}.This leaves a considerable amount of Indian population to be digitally neglected as there are limited digital content in their native language or the most widely used language Hindi. So, there is an immense potential for the English to Hindi machine translation which  can enable automatic translations for millions of existing digital content which are in English. 
+
+A lot of researches have been done in the field of neural machine translation and the results have shown that neural machine translation models can generate humanly translations ( \citeauthor{NIPS2014_5346} \citeyear{NIPS2014_5346}; \citeauthor{DBLP:journals/corr/BahdanauCB14} \citeyear{DBLP:journals/corr/BahdanauCB14}; \citeauthor{45610} \citeyear{45610}). Though a very small number of researches were pursued for studying the use of neural machine translation for English to Hindi translations and other Indic\footnote{relating to or denoting the group of Indo-European languages comprising Sanskrit and the modern Indian languages which are its descendants. {\url{https://www.merriam-webster.com/dictionary/Indic}}} Language pairs. 
+
+There is a huge gap in State of Art related to the use of neural machine translation for English to Hindi translation. There exists an exciting opportunity to design new neural machine translation models to create above average translations in English to Hindi using large corpora. There is also an immense opportunity to explore the domain adaptation of neural translation model to generate domain specific translations. For this research, the tourism domain was selected due to the observation that there is considerable lack of digital content in the domain. Though a lot of travel related digital content is published daily on the internet, but very few are available in Hindi. The availability of travel content in Hindi can influence a major portion of population in making better travel choices , and help to boost the Tourism industry which forms around 9.4\% of India's economy.This immediate potential, characteristic to the domain adaption of the neural translation model, motivates the research question specific to this work of dissertation (\citeauthor{wiki:tourism} , \citeyear{wiki:tourism}).
+
 \section{Research Question}
+This dissertation poses a question of the impact of domain specific training on neural machine translation model in regard to its domain adaptability,and an experiment of how to create better neural machine translation models to generate above average translations for domain specific data.
+
 \section{Research Objectives}
 To address this research question, five specific research objectives have been defined:
 \begin{enumerate}
@@ -12,25 +24,37 @@ To address this research question, five specific research objectives have been d
     \item To Test and Evaluate the neural translation model with Domain Specific Test Data from the Domain Specific Corpus.
 \end{enumerate}
 \section{Research Challenges}
+
+Along with the research objective mentioned earlier, there exists various significant research challenges which are specific to this area of neural machine translation. These research challenges must be addressed for this research to be conducted successfully. 
+\begin{enumerate}
+    \item Neural Machine Translation is a vast research area, and the study is extensive. Hindi is a complex language which follows different word orders and different sentence formation methods. There can be different translations in Hindi for a given sentence in English. Creating an above average English-Hindi translations involve in-depth knowledge of the Hindi language and the theory behind neural machine translation. 
+    
+    This work takes into consideration the diversity of the Hindi language and the neural translation system is designed to address this issue. 
+    \item Neural Translation models need large corpus for the purpose of training. The selection of corpus thus plays an important role while creating an above average neural translation model. This work will utilize the IIT-Bombay English-Hindi parallel corpus which is the largest publicly available English-Hindi corpus. 
+    \item The utilization of monolingual corpora in neural machine translation is a challenging task. As, overuse of synthetic data may deteriorate the translation quality and deviate the research from the main objective. To address this, a small number of monolingual corpus will be used for improving the translation quality.
+    \item Domain adaptation of the neural translation model is a tricky piece of work. If a neural translation model is trained with huge amount of new data, which totally unrelated to the original training data,it may result in bad translations. So, for this work, a closely related corpus is created for the domain specific training from the TED Talks website\footnote{\url{https://www.ted.com/}, accessed:17.08.2018}. 
+\end{enumerate}
+
 \section{Overview of Technical Approach}
+
+To address the research objectives outlined in the previous section, a large parallel corpus is selected and a English to Hindi neural translation model is implemented using an open-source neural machine translation toolkit. The domain specific corpus is generated by scrapping a publicly available website and processing the text using an open source natural language processing libraries. Further, a Hindi monolingual corpus is used to generate synthetic English sentences, and the newly created sentence pairs are used to re-train the base line translation model. The domain adaptation process involves, the re-training of the neural translation model using the domain specific corpus.  The models are tested and evaluated using the most commonly used metric BLEU on the domain specific test data. 
+
 \section{Dissertation Outline}
 \begin{itemize}
 
 \item Chapter 1 provides an introduction to the project. It presents a brief background
 and motivation behind the project and then presents the research questions addressed
 in this dissertation.
-\item Chapter 2 presents the State of the Art of Software Defined Networking and Quality
-of Service. This chapter briefly introduces the technologies and areas involved in
-this project and then reviews the relevant literature.
-\item Chapter 3 explains the architecture and internal details of the various components
-of SDN framework that would be used in this project. This chapter sets up the
-required technical background for the experiments to follow.
-\item  Chapter 4 presents the various experiments conducted in this dissertation. It
-presents the statement of the experiment followed by its implementation, results,
-and observations.
+
+\item Chapter 2 presents the State of the Art in the Machine Translation. This chapter briefly introduces the technologies and research areas involved in this project and then reviews the relevant literature.
+
+\item Chapter 3 provides a detailed description of the design decisions for the research, building on the foundations and stemming from the related work reviewed in Chapter Two.
+
+\item  Chapter 4 discusses the implementation details of this research. The technologies that were used are described, alongside the justification for selecting them.
+
 \item Chapter 5 provides an overview and discussion of the observations gathered throughout
-the project. This chapter places the research and findings into the overall big picture of SDN.
-\item Chapter 6 concludes the dissertation, talking about the challenges faced and contributions
-made in this project. It ends with a discussion on the future work in this direction.
+the research. The results of the research are evaluated against the research objectives set out in Chapter One.
+
+\item Chapter 6 concludes the dissertation in which conclusions are drawn about the research and highlights the research contribution.It ends with a discussion on the future work prospects.
 \end{itemize}
-	...
+

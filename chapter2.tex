@@ -1,12 +1,12 @@
 \chapter{State of Art}
-In this chapter, the background for the research is investigated. To further elucidate the motivation behind the research, the potential implications of formally measuring rumour impact are discussed in detail.
+In this chapter,the State of the Art in the Machine Translation is discussed. This chapter briefly introduces the technologies and research areas involved in this project and then reviews the relevant literature.
 
 \section{Background}
-In 1949, Warren Weaver, researcher at Rockefeller Foundation , presented a set of proposals for machine based translations which were based on information theory and successes in code breaking during the Second World War.(\cite{Weaver})
+In 1949, Warren Weaver, a researcher at Rockefeller Foundation, presented a set of proposals for machine based translations which were based on information theory and successes in code breaking during the Second World War(\citeauthor{Weaver},\citeyear{Weaver}).
 
-After few years, the machine translation research began in earnest in many US universities.As described by \cite{Hutchins55thegeorgetown-i.b.m.}, on January 7th 1954, the Georgetown-IBM experiment started, the IBM 701 computer automatically translated 60 Russian sentences into English for the first time in history. This was the first public demonstration of a machine translation system and it garnered much media and public interest.  
+After few years, the machine translation research began in earnest in many US universities. As described by \cite{Hutchins55thegeorgetown-i.b.m.}, on January 7th 1954, the Georgetown-IBM experiment started, the IBM 701 computer automatically translated 60 Russian sentences into English for the first time in history. This was the first public demonstration of a machine translation system and it garnered much media and public interest.  
  
-The ALPAC Report by \cite{Pierce:1966:LMC:1102009} stated that machines cannot compete with the human translation quality and suggested that the funding for Machine Translation should be stopped. 
+The ALPAC Report by \cite{Pierce:1966:LMC:1102009} stated that machines cannot compete with the human translation quality and suggested that the funding for Machine Translation should be stopped. But several researchers kept on studying how the machine can be used to create automated language translations. Most of these researches concentrated on limited language pairs with limited input and rule based engines. By the 1980s, a significant number of machine translation engines which relied on mainframe technologies were in use such as SYSTRAN, Logos etc (\citeauthor{wiki:history}, \citeyear{wiki:history}). 
 
 \begin{figure}[h]
 \includegraphics[width=\textwidth,]{figures/timeline.png}
@@ -15,17 +15,17 @@ The ALPAC Report by \cite{Pierce:1966:LMC:1102009} stated that machines cannot c
 
 \section{Statistical Machine Translation}
 
-In this section, the various translation models in Statistical Machine Translation and their impact on machine translation is discussed. The evolution of Statistical Machine Translation from Word Based Models to Phrase based models are discussed in depth as it paves the base of this research.
+In this section, the evolution of Statistical Machine Translation from Word Based Models to Phrase Based Models and their impact on Machine Translation are discussed in depth as it paves the base of this research.
 
-\subsection{Word Based Translation Systems}
-\cite{Brown:1988:SAL:991635.991651} proposed the use of statistical methods in Machine Translations. They proposed a translation process where the source text is partitioned into a set of fixed locations, then the glossary is used  to select the set of fixed locations to create a sequence, and finally words in target fixed locations are rearranged to form a target sentence. They successfully developed the statistical techniques for automatic glossary creation and arrangement of target word sequences but failed to provide examples for translation sentences.
+\subsection{Word Based Translation Models}
+\cite{Brown:1988:SAL:991635.991651} proposed the use of statistical methods in Machine Translations. They proposed a translation process where the source text is partitioned into a set of fixed locations, then the glossary is used  to select the set of fixed locations to create a sequence, and finally words in target fixed locations are rearranged to form a target sentence. They successfully developed the statistical techniques for automatic glossary creation and arrangement of target word sequences but failed to provide examples for translated sentences.
 
 \cite{Brown:1990:SAM:92858.92860}   considered only the translation of individual
 sentences and used Bayes theorem to implement a new translation model, 
 \begin{equation*}
     Pr(S|T)= \frac{Pr (S) Pr (T|S) }{Pr (T) }
 \end{equation*}
-,where Pr(T$|$S) is a probability the system produces when and T is a given target language and  S is a given source language. 
+,where Pr(T$|$S) is the probability the translator produced T in a given target language when  S is a given source language. 
 
 \begin{figure}[h]
 \includegraphics[width=\textwidth]{figures/wbmt.png}
@@ -35,21 +35,21 @@ A Statistical Machine Translation system  by \cite{Brown:1990:SAM:92858.92860} }
 
 A Source Language Model and a Translation Model outfitted a probability distribution over source-target sentence pair (S,T). The joint probability Pr (S, T) of the combined (S, T) was the result of the probability Pr (S) computed by the language model and the conditional probability Pr (T $|$ S) computed by the translation . The parameters of these models were evaluated automatically from an extensive database of source-target sentence sets utilizing an algorithm which optimized the fit between the models and the information.
 
-They experimented their model by creating an English vocabulary with 9,000 most common English words from Hansard data, and the French vocabulary with 9,000 most common French word. They applied their iterative algorithm to estimate some 81 million parameters from 40,000 pairs of sentences in each of the language. In the second approach, they used the statistical approach to decode 73 new french sentences. If the decoded sentence exactly matched the original translation it was assigned \textit{exact} category, otherwise it assigned \textit{alternate} or \textit{different} or \textit{wrong} or \textit{ungrammatical} based on the quality of translation.The system performed affirmatively for 48\% of the cases.
+They experimented their model by creating an English vocabulary with 9,000 most common English words from Canadian Hansard data\footnote{\url{https://www.lipad.ca/},accessed:10.08.2018}, and the French vocabulary with 9,000 most common French word. They applied their iterative algorithm to estimate some 81 million parameters from 40,000 pairs of sentences in each of the language. In the second approach, they used the statistical approach to decode 73 new french sentences. If the decoded sentence exactly matched the original translation it was assigned \textit{exact} category, otherwise it was assigned \textit{alternate} or \textit{different} or \textit{wrong} or \textit{ungrammatical} based on the quality of translation.The system performed affirmatively for 48\% of the cases.
 
-\cite{Brown:1993:MSM:972470.972474} described a series of five statistical models for the translation process and gave algorithms for estimating the parameters of these models given a set of bilingual pairs of sentences. These models were later considered as the IBM alignment Models.They defined the concept of word-by-word alignment between the two pairs of bilingual sentences. Their algorithm assigned a probability to each of these word-by-word alignments for any given pair of sentences. Though their research was confined to smaller English and French translations but it was considerable improvement to the the alignment of word-by-word relationships in the pair of sentences.
+\cite{Brown:1993:MSM:972470.972474} described a series of five statistical models for the translation process and gave algorithms for estimating the parameters of these models given a set of bilingual pairs of sentences. These models were later considered as the IBM alignment models. They defined the concept of word-by-word alignment between the pair of bilingual sentences. Their algorithm assigned a probability to each of these word-by-word alignments for any given pair of sentences. Though their research was confined to smaller English and French translations but it was a considerable improvement to the the alignment of word-by-word relationships in the pair of sentences.
 
-\cite{Vogel:1996:HWA:993268.993313} described a new model for word alignment in the statistical machine translation using first-order Hidden Markov Model(\cite{Jelinek76continuousspeech}) as it solved the time alignment problem for speech recognition. The main idea behind the model was to make the word-by-word alignment probabilities depend on the alignment positions rather than the absolute positions. The HMM-based model produced translation probabilities on par with the mixture alignment model and position alignments were much smoother in HMM-based model.
+\cite{Vogel:1996:HWA:993268.993313} described a new model for word alignment in the Statistical Machine Translation using first-order Hidden Markov Model(\citeauthor{Jelinek76continuousspeech}, \citeyear{Jelinek76continuousspeech}) as it solved the time alignment problem for speech recognition. The main idea behind the model was to make the word-by-word alignment probabilities depend on the alignment positions rather than the absolute positions. The HMM-based model produced translation probabilities on par with the mixture alignment model and position alignments were much smoother in HMM-based model.
 
-\cite{Och:1999:EMD:977035.977046} described a method to determine bilingual word classes to be used in statistical machine translations. They developed an optimization criterion based on the maximum likelihood approach and further describe a clustering algorithm. The results of their experiments showed that the usage of bilingual word classes improved the statistical machine translations significantly.
+\cite{Och:1999:EMD:977035.977046} described a method to determine bilingual word classes to be used in Statistical Machine Translation. They developed an optimization criterion based on the maximum likelihood approach and further described a clustering algorithm. The results of their experiments showed that the usage of bilingual word classes improved the statistical machine translations significantly.
 
 The IBM models were implemented in a toolkit called GIZA by \cite{Giza}, later updated to GIZA++ by \cite{Och:2000}.GIZA++ is open source and widely used.
 
 \subsection{Syntax Based Translation}
-A syntax-based statistical translation model was proposed by \cite{Yamada:2001:SST:1073012.1073079}. Their model transformed a source-language parse tree into a target-language string by applying stochastic operations at each node. Those operations captured the linguistic differences such as word order and case marking. The model produced word alignments which were better those produced by IBM Model 5. [Reference]
+A syntax-based statistical translation model was proposed by \cite{Yamada:2001:SST:1073012.1073079}. Their model transformed a source-language parse tree into a target-language string by applying stochastic operations at each node. Those operations captured the linguistic differences such as word order and case marking. The model produced word alignments which were better those produced by IBM Model 5 (\citeauthor{Brown:1993:MSM:972470.972474}, \citeyear{Brown:1993:MSM:972470.972474}). 
 
 They assumed that an English parse three $\varepsilon$  is transformed into a French sentence $f$. The English parse tree $\varepsilon$ consisted of nodes $\varepsilon_1$,$\varepsilon_2$,.. $\varepsilon_n$ and the French sentence consisted of French words $f_1,f_2,..,f_m$.
-The authors considered three random variables, \textbf{N}, \textbf{R}, and \textbf{T} as channel operations which were applied to each node. \textit{Insertion} \textbf{N} is an operation that inserts a French word just before or after the node and it can be either none, left or right. \textit{Reorder} \textbf{R} is an operation that is used to change the order of the children of the node. \textit{Translation} \textbf{T} is an operation which translates a terminal English leaf word into a French word. 
+The authors considered three random variables, N, R, and T as channel operations which were applied to each node. \textit{Insertion} N is an operation that inserts a French word just before or after the node and it can be either none, left or right. \textit{Reorder} R is an operation that is used to change the order of the children of the node. \textit{Translation} T is an operation which translates a terminal English leaf word into a French word. 
 
 The notation $ \theta = ( v, p,t )$  represents a  set of values of $N_i$, $R_i$ , T. Whereas, $ \theta_i = ( v_i, p_i,t_i )$  is a set of values of random variables associated with $\varepsilon_i$. $ \theta = \theta_1,\theta_2,...,\theta_n$is the set of all random variables associated with a parse tree $\varepsilon$ = $\varepsilon_1$,$\varepsilon_2$,..., $\varepsilon_n$.
 
@@ -58,15 +58,16 @@ The notation $ \theta = ( v, p,t )$  represents a  set of values of $N_i$, $R_i$
  \begin{equation}
      p(f|\varepsilon)=\sum_{\theta:Str(\theta(\epsilon))=f}p(\theta|\varepsilon)
  \end{equation}
- 
-For the estimation of the model parameters they used the EM algorithm (\cite{10.2307/2984875}) which automatically updates the model parameters to maximize the likelihood of the training corpus. Initially the model parameters were initialized and afterwards for each and every iteration, the number of events were counted and weighted by the probabilities of the event. Before the next iteration, the current model parameters were used to calculate the probabilities of the events and then the model parameters were re-estimated using the counts.
+as described by \cite{Yamada:2001:SST:1073012.1073079}.
+
+For the estimation of the model parameters they used the EM algorithm (\citeauthor{10.2307/2984875}, \citeyear{10.2307/2984875}) which automatically updates the model parameters to maximize the likelihood of the training corpus. Initially the model parameters were initialized and afterwards for each and every iteration, the number of events were counted and weighted by the probabilities of the event. Before the next iteration, the current model parameters were used to calculate the probabilities of the events and then the model parameters were re-estimated using the counts.
 
 For the experiments they trained their model on a small English $\rightarrow$ Japanese corpus and evaluated the performance of their model along with IBM Model 5. To evaluate performance they let the models generate the most probable alignment of the training corpus (called the Viterbi alignment) which shows  how the learned model induced the internal structure of training data.
 The alignment produced by their model and IBM Model 5 are shown in Figure (\ref{sbmt}) , where the darker lines represent the alignments judged accurate by humans. They further obtained average score of the first 50 sentence
 pairs in the corpus and counted the number of perfectly aligned sentences, which is shown in Table \ref{sbmtt}.Their model got a much better result than IBM Model 5 with more number perfectly aligned sentences.
 \begin{figure}
 \includegraphics[width=\textwidth,,height=250pt]{figures/syntax1.png}
-\caption{: Viterbi Alignments: Yamata et al's model (left) and IBM Model 5 (right). Darker lines are judged more
+\caption{Viterbi Alignments: \cite{Yamada:2001:SST:1073012.1073079}'s model (left) and IBM Model 5 (right). Darker lines are judged more
 correct by humans.} \label{sbmt}
 \end{figure}
 
@@ -74,19 +75,18 @@ correct by humans.} \label{sbmt}
 \centering
 \begin{tabular}{ |c|c|c| } 
  \hline & Alignment ave. score & Perfect sents \\ 
- \hline Yamata et al Model & 0.582 & 10 \\ 
+ \hline \cite{Yamada:2001:SST:1073012.1073079}'s Model & 0.582 & 10 \\ 
  \hline IBM Model 5 & 0.431 & 0 \\ 
  \hline
 \end{tabular}
-\caption{Human Evaluation : Yamata et al's model and IBM Model 5.}\label{sbmtt}
+\caption{Human Evaluation : \cite{Yamada:2001:SST:1073012.1073079}'s model and IBM Model 5.}\label{sbmtt}
 \end{table}
 
 
-\subsection{Phrase Based Translation Systems}
-Over the years many researchers tried to improve the quality of machine translations by using phrase based model. The align template model by \cite{W99-0604} can be considered as the initiation towards phrase based models. Phase based translation was used in a syntax based translation system by \cite{Yamada:2001:SST:1073012.1073079} which has been discussed earlier.A joint-probability model for phrase translation was introduced by \cite{Marcu:2002:PJP:1118693.1118711} and achieved more accurate translations produced using IBM
-Model 4.
+\subsection{Phrase Based Translation Model}
+Over the years many researchers tried to improve the quality of machine translations by using Phrase Based Translation Model. The align template model by \cite{W99-0604} can be considered as the initiation towards phrase based models. A method similar to Phrase Based Translation was used in a Syntax Based Translation system by \cite{Yamada:2001:SST:1073012.1073079} which has been discussed earlier. A joint-probability model for phrase translation was introduced by \cite{Marcu:2002:PJP:1118693.1118711} and achieved more accurate translations than those produced using IBM Model 4.
 
-A novel phrase-based translation model and decoding algorithm was proposed by \cite{Koehn:2003:SPT:1073445.1073462} which enabled them to evaluate and compare several previously proposed phrase-based translation models. They designed a uniform framework to compare different other translation models. The model proposed by \cite{Koehn:2003:SPT:1073445.1073462} was based on the noisy channel model(\cite{Brown:1993:MSM:972470.972474}) and they used the Bayes rule to reformulate the translation probability for translating a foreign sentence $f$ into English $e$ as
+A novel phrase-based translation model and decoding algorithm was proposed by \cite{Koehn:2003:SPT:1073445.1073462} which enabled them to evaluate and compare several previously proposed phrase-based translation models. They designed an uniform framework to compare different other translation models. The model proposed by \cite{Koehn:2003:SPT:1073445.1073462} was based on the noisy channel model(\cite{Brown:1993:MSM:972470.972474}) and they used the Bayes rule to reformulate the translation probability for translating a foreign sentence $f$ into English $e$ as
 
 $$
 argmax_ep(e|f)= argmax_ep(f|e)p(e)
@@ -107,9 +107,11 @@ $$
 
 The phrase-based decoder developed by \cite{Koehn:2003:SPT:1073445.1073462} employed a beam search algorithm similar to the one by Jelinek (1998)  for the comparison of different phrase-based translation models.
 
-\subsection{Hierarchical Phrase-Based Translation}
+Their results showed that phrase based translation gave better performance than the word based models by using lexical weighting of phrases and a phrase extraction heuristic.
 
-\cite{Chiang:2005:HPM:1219840.1219873} presented a  phrase-based machine translation model that used hierarchical phrases – phrases that contained subphrases. The basic phrase-based model was an instance of the noisy-channel approach by \cite{Brown:1993:MSM:972470.972474}, the other variations such as (Och and Ney, 2004; Koehn et al., 2003) had a distortion model that reordered phrases independently. The authors felt that there was a need of technique which capture translations whose scope was larger than few consecutive words, specifically in complex languages like Mandarin. The phrase-based translation worked well with phrase reordering but failed to accomplish inversion of two phrases within a complex sentence. They proposed the use of hierarchical phrases which consisted of both words and sub-phrases to address this problem. Their model was based on a weighted synchronous Context Free Grammar ( \cite{Aho:1969:SDT:1739930.1740037}).The model built partial translations using the hierarchical phrases and then combined them serially in a standard phrase-based model.  Instead of using the traditional noisy-channel approach , they used a more general log-liner model as proposed by \cite{Och:2002:DTM:1073083.1073133}.
+\subsection{Hierarchical Phrase-Based Translation Model}
+
+\cite{Chiang:2005:HPM:1219840.1219873} presented a  phrase-based machine translation model that used hierarchical phrases – phrases that contained subphrases. The basic phrase-based model was an instance of the noisy-channel approach by \cite{Brown:1993:MSM:972470.972474}, the other variations such as (\citeauthor{W99-0604}, \citeyear{W99-0604}; \citeauthor{Koehn:2003:SPT:1073445.1073462}, \citeyear{Koehn:2003:SPT:1073445.1073462}) had a distortion model that reordered phrases independently. The authors felt that there was a need of technique which capture translations whose scope was larger than few consecutive words, specifically in complex languages like Mandarin. The phrase-based translation worked well with phrase reordering but failed to accomplish inversion of two phrases within a complex sentence. They proposed the use of hierarchical phrases which consisted of both words and sub-phrases to address this problem. Their model was based on a weighted synchronous Context Free Grammar ( \citeauthor{Aho:1969:SDT:1739930.1740037}, \citeyear{Aho:1969:SDT:1739930.1740037}). The model built partial translations using the hierarchical phrases and then combined them serially in a standard phrase-based model.  Instead of using the traditional noisy-channel approach , they used a more general log-liner model as proposed by \cite{Och:2002:DTM:1073083.1073133}.
 
 They evaluated their model on a Mandarin $\rightarrow$ English translation task and compared their model against Pharaoh (\citeauthor{10.1007/978-3-540-30194-3_13}, \citeyear{10.1007/978-3-540-30194-3_13}). Their experiments showed that hierarchical phrase pairs can be learned by the models without using any syntactically-annotated training data and can improve the translation accuracy significantly compared to the phrase-based systems. Though the hierarchical models encouraged the consolidation of syntactic information but failed to provide a statistically significant gain.
 
@@ -127,35 +129,35 @@ They evaluated their model on a Mandarin $\rightarrow$ English translation task 
 \end{table}
 
 \subsection{Moses and Factored Translation Model}
-Moses is an open-source implementation of the statistical machine translation developed by \cite{Koehn:2007:MOS:1557769.1557821}. The statistical machine translate systems are trained on huge quantities of parallel bilingual data and larger quantities of monolingual data. The parallel data is collection of sentences in two different languages which is sentence aligned, that is the sentence in one language is matched with sentence in corresponding language. In Moses, the system takes parallel data for the training process and uses the co-occurrences of phrases to infer translation correspondences between two languages of interest. In phrase-based machine translation, these correspondences are essentially between ceaseless arrangements of words, whereas in hierarchical phrase-based machine translation or syntax-based translation, more structure is added to the correspondences. Apart from being an open-source toolkit for SMT, Moses extended the phrase-based translation with factors and confusion network decoding. The phrase-based model in statistical machine translation was limited to the mapping of small text chunks with no express utilization of etymological data, be it morphological, syntactic, 
+Moses is an open-source implementation of the statistical machine translation developed by \cite{Koehn:2007:MOS:1557769.1557821}. The Statistical Machine Translation Systems are trained on huge quantities of parallel bilingual data and larger quantities of monolingual data. The parallel data is collection of sentences in two different languages which is sentence aligned, that is the sentence in one language is matched with the sentence in corresponding language. In Moses, the system takes parallel data for the training process and uses the co-occurrences of phrases to infer translation correspondences between two languages of interest. In phrase-based machine translation, these correspondences are essentially between ceaseless arrangements of words, whereas in hierarchical phrase-based machine translation or syntax-based translation, more structure is added to the correspondences. Apart from being an open-source toolkit for SMT, Moses extended the phrase based translation with factors and confusion network decoding. The Phrase Based Model in Statistical Machine Translation was limited to the mapping of small text chunks with no express utilization of etymological data, be it morphological, syntactic, 
 or on the other hand semantic. Previous researches showed that these additional sources of information are valuable when integrated into pre-processing or post-processing steps. Moses also integrated confusion network decoding, a mechanism which allowed translation of ambiguous input and enabled tighter integration of speech recognition and machine translation. The machine translation system examines a network of different word choices instead of passing along the one-best output of the recognizer. 
 \subsubsection{Factored Translation Model}
-The non-factored SMT such as phrase-based SMT typically dealt only with surface form of words and had one phrase table as shown in Figure 1. 
+The non-factored SMT such as phrase based SMT typically dealt only with surface form of words and had one phrase table as shown in Figure \ref{nofac}. 
 \begin{figure}
 \includegraphics[width=\textwidth,,height=250pt]{figures/moses1.png}
-\caption{Non-factored Translation. Adapted from \cite{Koehn:2007:MOS:1557769.1557821}} \label{fig1}
+\caption{Non-factored Translation. \citep{Koehn:2007:MOS:1557769.1557821}} \label{nofac}
 \end{figure}
 
-In factored translation model, the surface forms may be augmented with different factors, such as POS tags or lemma. This creates a factored representation of each word, Figure 2 [Refer].
+In factored translation model, the surface forms may be augmented with different factors, such as POS tags or lemma. This created a factored representation of each word, refer Figure \ref{factrans}.
 \begin{figure}
 \includegraphics[width=\textwidth,height=250pt]{figures/moses2.png}
-\caption{Factored Translation} \label{fig1}
+\caption{Factored Translation. \citep{Koehn:2007:MOS:1557769.1557821}} \label{factrans}
 \end{figure}
 
-The authors suggested that mapping of source phrases to target phrases might be decomposed into a few stages. Decomposition of the decoding process into different steps implied that diverse components can be modelled independently. Modelling factors in isolation takes into consideration adaptability in their application. It can likewise increment accuracy and decrease sparsity by limiting the number conditions for each step. For example, a surface form can be decomposed to surface forms and lemma, as shown in figure3.
+The authors suggested that mapping of source phrases to target phrases might be decomposed into a few stages. Decomposition of the decoding process into different steps implied that diverse components can be modelled independently. Modelling factors in isolation takes into consideration adaptability in their application. It can likewise increment accuracy and decrease sparsity by limiting the number conditions for each step. For example, a surface form can be decomposed to surface forms and lemma, as shown in Figure \ref{exfac}.
 \begin{figure}
 \begin{center}
 \includegraphics[width=300pt]{figures/moses3.png}
-\caption{Example of graph of decoding systems} \label{fig1}
+\caption{Example of graph of decoding systems. \citep{Koehn:2007:MOS:1557769.1557821}} \label{exfac}
 \end{center}
 \end{figure}
 
-The graph was allowed to be user definable, thus it provided a scope for experimentation with different configurations to find the optimum configuration for the given language pair and data. The authors considered the factors on the source sentence to be fixed, therefore they did not implement any decoding step to create source factors from other source factors. They designed Moses such as every factor on the target language could have its own language model.  Many factors such as lemmas and POS tags are sparser than surface forms so it was possible to create a higher order language models for these factors.
+The graph was allowed to be user definable, thus it provided a scope for experimentation with different configurations to find the optimum configuration for the given language pair and data. The authors considered the factors on the source sentence to be fixed, therefore they did not implement any decoding step to create source factors from other source factors. They designed Moses as such becuase every factor on the target language could have its own language model.  Many factors such as lemmas and POS tags are sparser than surface forms so it was possible to create a higher order language models for these factors.
 
 \subsubsection{Confusion Network Decoding}
 The authors wanted to meet the increasing demands of integrating machine translation technology into bigger information processing systems with upstream NLP/speech processing tools such as named entity recognizers, speech recognizers, morphological analyzers, etc. The authors experimented with confusion networks by focusing on the speech translation case, where initially the input is generated by a speech recognition system. Their immediate goal was to improve the language translation by combining the speech recognition and machine translation models. The biggest problem in translation of spoken language was, its proneness to speech recognition errors which used to corrupt the input syntax and its meaning. Previous researches also showed that better translations can be obtained from the transcriptions of the speech recognizer.  The authors found that significant improvements could have been achieved by applying machine translation techniques on larger sets of transcription texts generated by the speech recognizers and combining the scores of acoustic models, language models, and translation models. 
 
-In Moses, they implemented the confusing network decoding as discussed in (Bertoldi and Federico 2005), and they developed a simpler translation model and a more efficient implementation of the search algorithm.
+In Moses, they implemented the confusing network decoding as discussed in \citep{4218346}, and they developed a simpler translation model and a more efficient implementation of the search algorithm.
 
 \subsection{Challenges in SMT}
 
@@ -165,46 +167,60 @@ There were several challenges faced in statistical machine translation, which ar
 
 \begin{itemize}
     \item \textbf{Lack of Large Parallel Corpora}   Statistical Machine Translation systems need large sets of parallel data for the translation task. But the unavailability of large corpora in low resource language posed a challenge to the SMT and it affected the efficiency of translation models in several low resource languages.
-    \item\textbf{Sentence Alignment }   In parallel corpora, a single sentence in one language when translated into other language may be more than one sentence, thus aligning such sentences in parallel becomes a challenge. Further, algorithms such as Gale-Church alignment algorithm needed to be used for sentence alignment.
-     \item\textbf{Word Alignment }      Most of the popular parallel corpora is sentence aligned or sentence alignment can be done using the previously mentioned Gale-Church Algorithm. The real challenge lies for word alignment, to know which word in source language aligns with which word in the target language, though IBM models (Reference) and HMM-approach (Reference) provides a better solution to this problem.
-     \item\textbf{Statistical anomalies }  Sometimes the real-world training sets tends to overwrite the translations of proper nouns. An abundance of particular noun in the training set may tend overwrite a less frequent noun in translated sentence. An example would be like,"\textit{Thóg mé an traein go Gaillimh} " in Irish should ideally translate to "\textit{I took the train to Galway}" in English, but gets to "\textit{I took the train to Cork"} due to abundance of "\textit{train to Cork}" in the training data.
+    \item\textbf{Sentence Alignment }   In parallel corpora, a single sentence in one language when translated into other language may be more than one sentence, thus aligning such sentences in parallel becomes a challenge. Further, algorithms such as Gale-Church alignment algorithm needed to be used for sentence alignment(\citeauthor{Gale:1991:PAS:981344.981367},\citeyear{Gale:1991:PAS:981344.981367}).
+     \item\textbf{Word Alignment }      Most of the popular parallel corpora is sentence aligned or sentence alignment can be done using the previously mentioned Gale-Church Algorithm(\citeauthor{Gale:1991:PAS:981344.981367},\citeyear{Gale:1991:PAS:981344.981367}). The real challenge lies for word alignment, to know which word in source language aligns with which word in the target language, though IBM models and HMM-approach(\citeauthor{Vogel:1996:HWA:993268.993313},\citeyear{Vogel:1996:HWA:993268.993313} provides a better solution to this problem. 
+     \item\textbf{Statistical anomalies }  Sometimes the real-world training sets tends to overwrite the translations of proper nouns. An abundance of particular noun in the training set may tend overwrite a less frequent noun in translated sentence. An example would be like,"\textit{Thóg mé an eitilt go Ibiza} " in Irish should ideally translate to "\textit{I took the flight to Ibiza}" in English, but gets to "\textit{I took the  flight to London"} due to abundance of "\textit{flight to London}" in the training data.
      \item\textbf{Idioms }Depending upon the corpora utilized for the translation task, idioms may not translate "idiomatically". For instance, utilizing Canadian Hansard [Reference] as the bilingual corpus, "hear" may constantly be meant "Bravo!" since in Parliament "Hear, Hear!" moves toward becoming "Bravo!". 
      \item\textbf{Different Word Orders}    Different languages follow different word orders. In some languages, classification can be done by naming the typical order of subject (S), verb (V) and Object (O) in a sentence and in some languages, it can be represented as SVO or VSO. An example, the English sentence \textit{“Tom is eating vegetables”} is having the SVO word order, where as its translation in Hindi can be either \textit{“Tom vegetables kha raha hai”} which is SOV or \textit{“Vegetables kha raha hai Tom”} which is of the OVS order. 
-     \item\textbf{Out of vocabulary (OOV) words}    The SMT systems typically store the different word forms as separate symbols which are unrelated to each other and words forms or phrases that were not in the training data which could not be translated. This is generally due to the lack of training data, changes in the human domain or some morphological differences. 
-     \item\textbf{Mobile devices}   The rapid increase in the processing power of tablets and cell phones, combined with the wide accessibility of machine translation systems. However, combining other Speech recognition systems with SMT on mobile devices raises problems of sentence segmentation, de-normalization and punctuation prediction which is a basic necessity for quality translations.
+     \item\textbf{Out of vocabulary (OOV) words}    The SMT systems typically stores the different words and their word forms as separate symbols in their vocabulary. The unrelated words or the phrases which are not part of the training data can not be translated. This is generally due to the lack of training data, changes in the human domain or some morphological differences. 
+     \item\textbf{Mobile devices}   The rapid increase in the processing power of tablets and cell phones, combined with the wide accessibility of machine translation systems. However, when speech recognition system are comnined with SMT for portable devices it raises several lexical issues which deteriorate the quality of translations.
+     
 \end{itemize}
-\section{Neural Machine Translation Systems}
-\subsection{Introduction}
-\subsection{Google's Neural Machine Translation}
-They proposed a model (see Figure \ref{gnmt1}) which follows the common sequence-to-sequence learning framework [41] with attention [2]. The model has three components: an encoder network, a decoder network and an attention network. The encoder network converts a source sentence into a list of vectors, one vector per input symbol. When this list of vectors is passed to decoder network it produces one symbol at a time until it encounters the special end-of-sentence symbol (EOS). The encoder and decoder are connected through an attention module which allows the decoder to focus on different regions of the source sentence during the course of decoding. 
+\section{Neural Machine Translation}
+\subsection{Background}
+
+In 2013, a new end-to-end encoder-decoder structure for machine translation was proposed by \cite{D13-1176}. They introduced a class of probabilistic continuous translation models called Recurrent Continuous Translation Models which were purely based on continuous representations for words, phrases and sentences and did not rely on alignments or phrasal translation units.
+
+\cite{NIPS2014_5346} proposed the use of Deep Neural Networks in Sequence to Sequence learning for Machine Translations. Their method used a multi-layered Long Short-Term Memory (LSTM) to map the input sequence to a vector of a fixed dimensions, and then used another deep LSTM to decode the
+target sequence from the vector. Their results showed that Neural Machine Translation system having large deep LSTM with a limited vocabulary can outperform a standard SMT-based system. 
+
 \begin{figure}[h]
-\includegraphics[width=\textwidth]{figures/gnmt1.png}
-\caption{ The model architecture of GNMT, Google’s Neural Machine Translation system. } \label{gnmt1}
+\includegraphics[width=\textwidth]{figures/nmt1.png}
+\caption{ The basic architecture Neural Machine Translation system by \cite{NIPS2014_5346} } \label{gnmt1}
 \end{figure}
 
-On the left
-is the encoder network, on the right is the decoder network, in the middle is the attention module. The
-bottom encoder layer is bi-directional: the pink nodes gather information from left to right while the green
-nodes gather information from right to left. The other layers of the encoder are uni-directional. Residual
-connections start from the layer third from the bottom in the encoder and decoder. The model is partitioned
-into multiple GPUs to speed up training. In our setup, we have 8 encoder LSTM layers (1 bi-directional layer
-and 7 uni-directional layers), and 8 decoder layers. With this setting, one model replica is partitioned 8-ways
-and is placed on 8 different GPUs typically belonging to one host machine. During training, the bottom
-bi-directional encoder layers compute in parallel first. Once both finish, the uni-directional encoder layers
-can start computing, each on a separate GPU. To retain as much parallelism as possible during running
-the decoder layers, we use the bottom decoder layer output only for obtaining recurrent attention context,
-which is sent directly to all the remaining decoder layers. The softmax layer is also partitioned and placed on
-multiple GPUs. Depending on the output vocabulary size we either have them run on the same GPUs as the
-encoder and decoder networks, or have them run on a separate set of dedicated GPUs.
+\cite{DBLP:journals/corr/ChoMGBSB14} proposed a new neural network model with two recurrent neural networks (RNN) as Encoder and Decoder. One RNN encoded a sequence of symbols into a fixed length vector representation, while the other decoded the representation into another sequence of symbols. Their results showed that RNN Encoder–Decoder were able to capture both semantic and syntactic structures of the phrases.
 
-For Notation, they used bold lower case to denote the vectors, bold upper case to denote the matrices, cursive upper case to denote the sets, capital letters to denote the sequences and lower case to denote the individual symbols in a sequence. 
+\cite{DBLP:journals/corr/BahdanauCB14} proposed a method which allowed a model to automatically soft-search for parts of a source sentence that are relevant in predicting a target word,without having to form these parts as a hard segment explicitly. With this approach, they achieved e a translation performance comparable to the existing state-of-the-art
+phrase-based system on the task of English-to-French translation.
+
+\cite{DBLP:journals/corr/LuongPM15} proposed two effective classes of attentional mechanism, a global approach which always attends to all source words and a local one that only looks at a subset of source words at a time.Their ensemble model using different attention architectures established a new state-of-the-art result in the WMT'15 English to German translation task with 25.9 BLEU points.
+
+\cite{DBLP:journals/corr/JozefowiczVSSW16} experimented with different neural network models on different sizes of corpora, their experiments showed that RNNs can be trained
+on large amounts of data, and they outperform competing models
+including carefully tuned N-grams. Their experiments showed that a large, regularized LSTM LM, with projection layers and trained with an approximation to the true Softmax with importance sampling performed much better than N-grams.
+
+
+In the Findings of First Conference on Machine Translation (WMT'16), the neural machine translation systems that participated in the WMT evaluation outperformed phrase-based statistical machine translation system by up to 3 BLEU score (\citeauthor{WMT:2016}, \citeyear{WMT:2016}).
+
+\cite{koehnblog} wrote, \textit{"Neural Machine Translation (NMT) is an exciting and promising new approach to Machine Translation. However, while the technology is promising we still have some way to go to commercial implementations that can rival Rule Based Machine Translation (RBMT) and Statistical Machine Translation (SMT) in all use cases. Some recent claims by industry players to suggest that near human quality is right around the corner for all of us, might be a bit of an over-simplification."}. He argued that even if the Neural Machine Translation systems produce superior quality results, its very difficult to implement such systems at an industrial scale as it would require huge investment in infrastructure for processing the translations.
+
+\subsection{Google's Neural Machine Translation}
+\cite{45610} proposed a model (see Figure \ref{gnmt1}) which follows the common sequence-to-sequence learning framework \citep{NIPS2014_5346} with attention \citep{DBLP:journals/corr/BahdanauCB14}. The model has three components: an encoder network, a decoder network and an attention network. The encoder network converts a source sentence into a list of vectors, one vector per input symbol. When this list of vectors is passed to decoder network it produces one symbol at a time until it encounters the special end-of-sentence symbol (EOS). The encoder and decoder are connected through an attention module which allows the decoder to focus on different regions of the source sentence during the course of decoding. 
+\begin{figure}[h]
+\includegraphics[width=\textwidth]{figures/gnmt1.png}
+\caption{ The model architecture of GNMT, Google’s Neural Machine Translation system \citep{45610}. } \label{gnmt1}
+\end{figure}
+
+Figure \ref{gnmt1} shows the architecture of the Google Neural Translation Model, \cite{45610}'s description of the architecture is as follows. On the left is the encoder network, on the right is the decoder network, in the middle is the attention module. The bottom encoder layer is bi-directional: the pink nodes gather information from left to right while the green nodes gather information from right to left. The other layers of the encoder are uni-directional. Residual connections start from the layer third from the bottom in the encoder and decoder. The model is partitioned into multiple GPUs to speed up training. In their setup, they have 8 encoder LSTM layers (1 bi-directional layer and 7 uni-directional layers), and 8 decoder layers. With this setting, one model replica is partitioned 8-ways and is placed on 8 different GPUs typically belonging to one host machine. During training, the bottom bi-directional encoder layers compute in parallel first. Once both finish, the uni-directional encoder layers start computing, each on a separate GPU. To retain as much parallelism as possible during running the decoder layers, they used the bottom decoder layer output only for obtaining recurrent attention context,which is sent directly to all the remaining decoder layers. The softmax layer is also partitioned and placed on multiple GPUs. Depending on the output vocabulary size they either have them run on the same GPUs as the
+encoder and decoder networks, or have them run on a separate set of dedicated GPUs.
 
 They assumed (X,Y) as a source and target sentence pair , and $X$ = $x_1,x_2,x_3,..,x_M$ as the sequence of M symbols in the source text and $Y$= $y_1,y_2,y_3,.., y_N$ as the sequence of $N$ symbols in target text. The encoder is a simple function of the following form:
 $$x_1,x_2,..,x_M = EncoderRNN(x_1,x_2,..,x_M)$$
 
 Their decoder network is implemented as an amalgamation of an RNN network and a softmax Layer. The decoder RNN network creates a hidden state $Y_i$ for the next symbol to be predicted, which then goes through the softmax layer to generate a probability distribution over candidate output symbols. In their experiments the authors found out that Neural Machine Translation systems must have deep RNNs for encoder and decoder networks to achieve good accuracy, they need to capture the minute irregularities in the source and target languages. 
 
-The Attention Model they implemented in their research is similar to [2]. More precisely, they assumed $y_{i-1}$ to be the decoder RNN from the previous decoding step which is the bottom decoder layer. Attention context $a_i$ , for the current time step is computed according to the following formulas:
+The Attention Model they implemented in their research is similar to \citep{DBLP:journals/corr/BahdanauCB14}. More precisely, they assumed $y_{i-1}$ to be the decoder RNN from the previous decoding step which is the bottom decoder layer. Attention context $a_i$ , for the current time step is computed according to the following formulas:
 
 \begin{align*}
     s_t &= AttentionFunction(y_{i-1},x_t)\;\forall t \;1\leq t\leq M\\
@@ -213,74 +229,72 @@ The Attention Model they implemented in their research is similar to [2]. More p
 \end{align*}
 
 
-Where \textit{AttentionFunction} in their implementation is a feed forward network with one hidden layer.
+Where \textit{AttentionFunction} in their implementation is a feed forward network with one hidden layer\citep{45610}.
 
-The authors acknowledged the fact that simply tacking up more Layers of LSTM makes the network slower and difficult to train, likely due to exploding and vanishing gradient problems [33,22]. The simple stacked LSTM layers work well up to 4 to 6 layers but performed very poorly beyond 8 layers.
+The authors acknowledged the fact that simply tacking up more Layers of LSTM makes the network slower and difficult to train, likely due to exploding and vanishing gradient problems \citep{DBLP:journals/corr/NorouziBCJSWS16,Hochreiter01gradientflow}. The simple stacked LSTM layers worked well up to 4 to 6 layers but performed very poorly beyond 8 layers. 
 
 \begin{figure}
 \includegraphics[width=\textwidth]{figures/gnmt2.png}
-\caption{The difference between normal stacked LSTM and their stacked LSTM with residual connections.} \label{gnmt2}
+\caption{The difference between normal stacked LSTM and their stacked LSTM with residual connections \citep{45610}.} \label{gnmt2}
 \end{figure}
 
-The authors were motivated by the idea of modelling differences between an intermediate layer’s output and the targets, which has shown to work well for many projects in the past [16,21,40], they introduced residual connections among the LSTM layers in a stack (See Figure \ref{gnmt2}). Residual Connection greatly improved the gradient flow in the backward pass, which allowed them to train their encoder and decoder networks with 8 LSTM layers. In translation systems, the information required to translate some words in the output language can appear anywhere in the source language. They decided to use a bi-directional RNN for the encoder to have the optimum scenario in the encoder network (See Figure \ref{gnmt3}). They used the bi-directional connections for the bottom encoder layer while keeping other layer uni-directional to allow maximum parallelization during computation. 
+The authors were motivated by the idea of modelling differences between an intermediate layer’s output and the targets, which has shown to work well for many projects in the past \citep{NIPS1989_207,7780459,DBLP:journals/corr/SrivastavaGS15}, they introduced residual connections among the LSTM layers in a stack (See Figure \ref{gnmt2}). Residual Connection greatly improved the gradient flow in the backward pass, which allowed them to train their encoder and decoder networks with 8 LSTM layers. In translation systems, the information required to translate some words in the output language can appear anywhere in the source language. They decided to use a bi-directional RNN for the encoder to have the optimum scenario in the encoder network (See Figure \ref{gnmt3}). They used the bi-directional connections for the bottom encoder layer while keeping other layer uni-directional to allow maximum parallelization during computation. 
 
 \begin{figure}
 \includegraphics[width=\textwidth,height=250pt]{figures/gnmt3.png}
-\caption{The structure of bi-directional connections in the first layer of the encoder. LSTM layer $LSTM_f$
-processes information from left to right, while LSTM layer $LSTM_b$ processes information from right to left.
-Output from $LSTM_f$ and $LSTM_b$ are first concatenated and then fed to the next LSTM layer $LSTM_1$.} \label
+\caption{Residual connections in Google NMT \citep{45610}} \label
 {gnmt3}\end{figure}
 
-Due to the complexity of their model the authors implemented model parallelism and data parallelism to speed up the training. But Model Parallelism came up with certain constraints on their Model Architecture like they could not bi-directional LSTM layers for their all encoder layers.  The authors implemented the Wordpiece model which was initially developed by Google Speech Recognition System [35] for solving Japanese/ Korean segmentation problem to solve the out-of-vocabulary translation problems. 
+Due to the complexity of their model the authors implemented model parallelism and data parallelism to speed up the training. But Model Parallelism came up with certain constraints on their Model Architecture like they could not bi-directional LSTM layers for their all encoder layers.  The authors implemented the Wordpiece model which was initially developed by Google Speech Recognition System \citep{conf/icassp/SchusterN12} for solving Japanese/ Korean segmentation problem to solve the out-of-vocabulary translation problems. 
 
 
 \begin{figure}
-\includegraphics[width=\textwidth]{figures/gnmt5.png}
+\includegraphics[width=\textwidth,height=250pt]{figures/gnmt5.png}
 \caption{Log perplexity vs. steps for Adam, SGD and Adam-then-SGD on WMT En $\rightarrow$ Fr during maximum
-likelihood training} \label{fig1}
+likelihood training \citep{45610}.} \label{fig1}
 \end{figure}
 
-The authors used two publicly available corpora WMT’14 English-to-French (WMT En $\rightarrow$Fr) and English-to-German (WMT En $\rightarrow$De) as benchmarks for their Neural Machine Translation systems. In addition to these publicly available corpora they used Google’s translation production corpora which is much bigger than the WMT corpora for a given language pair. The WMT En-Fr contains 36M sentence pairs while the En-De contains 5M sentence pairs. They evaluated their models by carrying out side by side Human evaluations along with standard BLEU score metric. The side by side scores ranged from 0 to 6, with a score of 0 meaning “completely nonsense translation”, and a score of 6 meaning “perfect translation: the meaning of the translation is completely consistent with the source, and the grammar is correct”. They trained the models using the system they implemented in TensorFlow. For the initial stage of maximum likelihood training they used a combination of Adam [25] and SGD learning algorithms provided by TensorFlow. They ran Adam for the first 60K steps , after which they switched to simple SGD. They found that in the beginning Adam accelerates training but Adam alone converged to a worse point than a combination of Adam first, followed by SGD ( Figure 2.5). For the Adam part they used a learning rate of 0.0002 and for the SGD part they used a learning rate of 0.5. They used word-based, character-based, mixed-character-based and several wordpiece models with different vocabulary sizes for the experiments. Table summarizes the results they achieved on WMT En $\rightarrow$ Fr dataset. Their best model, WPM-32K achieved a BLEU score of 38.95. The WMT En $\rightarrow$ De was much more difficult than the En $\rightarrow$ Fr due to the less size of training data and German is a more morphologically rich language which needs vocabulary for word models. Their best model WPM-32K achieved a BLEU score of 24.61. 
+The authors used two publicly available corpora WMT’14\footnote{\url{http://www.statmt.org/wmt14/}} English-to-French (WMT En $\rightarrow$Fr) and English-to-German (WMT En $\rightarrow$De) as benchmarks for their Neural Machine Translation systems. In addition to these publicly available corpora they used Google’s translation production corpora which is much bigger than the WMT corpora for a given language pair. The WMT En$\rightarrow$Fr contains 36M sentence pairs while the En$\rightarrow$De contains 5M sentence pairs. They evaluated their models by carrying out side by side Human evaluations along with standard BLEU score metric. The side by side scores ranged from 0 to 6, with a score of 0 meaning “completely nonsense translation”, and a score of 6 meaning “perfect translation: the meaning of the translation is completely consistent with the source, and the grammar is correct”. They trained the models using the system they implemented in TensorFlow. For the initial stage of maximum likelihood training they used a combination of Adam \citep{DBLP:journals/corr/KingmaB14} and SGD learning algorithms provided by TensorFlow. They ran Adam for the first 60K steps , after which they switched to simple SGD. They found that in the beginning Adam accelerates training but Adam alone converged to a worse point than a combination of Adam first, followed by SGD ( Figure 2.5). For the Adam part they used a learning rate of 0.0002 and for the SGD part they used a learning rate of 0.5. They used word-based, character-based, mixed-character-based and several wordpiece models with different vocabulary sizes for the experiments. Table summarizes the results they achieved on WMT En $\rightarrow$ Fr dataset. Their best model, WPM-32K achieved a BLEU score of 38.95. The WMT En $\rightarrow$ De was much more difficult than the En $\rightarrow$ Fr due to the less size of training data and German is a more morphologically rich language which needs vocabulary for word models. Their best model WPM-32K achieved a BLEU score of 24.61. 
 
 \begin{table}[h!]
 \centering
  \begin{tabular}{ |ccc| } 
   \hline Model & BLEU &  CPU decoding time
-per sentence (s) \\ 
+ (s) \\ 
   \hline  Word &  37.90 & 0.2226\\
   Character (512 nodes)& 38.01 & 1.0530\\
   WPM-8K & 38.27 &  0.1919\\
   WPM-16K &  37.60 & 0.1874\\
   WPM-32K & 38.95 &  0.2118\\
   Mixed Word/Character & 38.39 &  0.2774\\
-  \hline PBMT [15] & 37.0 &\\
-  LSTM (6 layers) [31]  &  31.5 & \\
-  LSTM (6 layers + PosUnk) [31] &33.1&\\
-  Deep-Att [45] &  37.7&\\
-  Deep-Att + PosUnk [45] &39.2\\
+  \hline PBMT \citep{durrani} & 37.0 &\\
+  LSTM (6 layers)\citep{DBLP:journals/corr/LuongSLVZ14}  &  31.5 & \\
+  LSTM (6 layers + PosUnk) \citep{DBLP:journals/corr/LuongSLVZ14} &33.1&\\
+  Deep-Att \citep{DBLP:journals/corr/ZhouCWLX16} &  37.7&\\
+  Deep-Att + PosUnk \citep{DBLP:journals/corr/ZhouCWLX16} &39.2&\\
   \hline
  \end{tabular}
-\caption{Results of the Single model on WMT En$\rightarrow$ Fr (newstest2014)}
+\caption{Results of the Single model on WMT En$\rightarrow$ Fr \citep{45610}}
 \end{table}
 
 \begin{table}[h!]
 \centering
  \begin{tabular}{ |ccc| } 
   \hline Model & BLEU &  CPU decoding time
-per sentence (s) \\ 
+ (s) \\ 
   \hline  Word &  23.12 & 0.2972\\
   Character (512 nodes)& 22.62 & 0.8011\\
   WPM-8K & 23.50 &  0.2079\\
   WPM-16K & 24.36 & 0.1931\\
   WPM-32K & 24.61 & 0.1882\\
   Mixed Word/Character & 24.17 & 0.3268\\
-  \hline PBMT [6] & 20.7 &\\
-  RNNSearch [37]  &  16.5 & \\
-  RNNSearch-LV [37] &16.9&\\
-  Deep-Att [45] & 20.6&\\
+  \hline PBMT \citep{durrani} & 20.7 &\\
+  RNNSearch \citep{DBLP:journals/corr/LuongSLVZ14}  &  16.5 & \\
+  RNNSearch-LV \citep{DBLP:journals/corr/LuongSLVZ14} &16.9&\\
+  Deep-Att \citep{DBLP:journals/corr/ZhouCWLX16}& 20.6&\\
   \hline
  \end{tabular}
-\caption{Results of the Single model on WMT En$\rightarrow$ De (newstest2014)}
+\caption{Results of the Single model on WMT En$\rightarrow$ De \citep{45610}}
 \end{table}
 
 
@@ -295,10 +309,10 @@ They further used RL training to fine-tune the sentence BLEU score after normal 
   En$\rightarrow$De &  24.67 &  24.60\\
   \hline
  \end{tabular}
-\caption{Single model test BLEU scores after RL Refining}
+\caption{Single model test BLEU scores after RL Refining \citep{45610}.}
 \end{table}
 
-They ensembled 8 RL-refined models and obtained a state-of-the-art result of 41.6 BLEU points on the WMT En$\rightarrow$Fr dataset. They obtained a state-of-the-art result of 26.30 BLEU points on the WMT En$\rightarrow$De dataset. The results are showed in Table 3.4.For the side-by-side comparison, humans were asked to rate four translations for the given source sentence. The four translations were: 1) the best phrase-based translation downloaded from statmt website, 2) an ensemble of 8 ML-trained models, 3) an ensemble of 8 ML-trained and then RL-refined models, and 4) reference human translation directly obtained from test data. The results are showed in Table x.The results clearly showed that though RL refinement can achieve better BLEU scores, but it barely improved the human impression of the translation quality. 
+They ensembled 8 RL-refined models and obtained a state-of-the-art result of 41.6 BLEU points on the WMT En$\rightarrow$Fr dataset. They obtained a state-of-the-art result of 26.30 BLEU points on the WMT En$\rightarrow$De dataset. The results are showed in Table \ref{gootable}.For the side-by-side comparison, humans were asked to rate four translations for the given source sentence. The four translations were: 1) the best phrase-based translation downloaded from statmt website, 2) an ensemble of 8 ML-trained models, 3) an ensemble of 8 ML-trained and then RL-refined models, and 4) reference human translation directly obtained from test data. The results are showed in Table \ref{humantable}. The results clearly showed that though RL refinement can achieve better BLEU scores, but it barely improved the human impression of the translation quality. 
 
 \begin{table}[h!]
 \centering
@@ -311,7 +325,8 @@ They ensembled 8 RL-refined models and obtained a state-of-the-art result of 41.
   &RL-refined WPM-32K (8 models)&26.30\\
   \hline
  \end{tabular}
-\caption{Model ensemble results}
+\caption{Model ensemble results \citep{45610}.}
+\label{gootable}
 \end{table}
 
 
@@ -329,13 +344,14 @@ averaged score \\
   Human &   &  4.82\\
   \hline
  \end{tabular}
-\caption{Human side-by-side evaluation results for En$\rightarrow$Fr model}
+\caption{Human side-by-side evaluation results for En$\rightarrow$Fr model \citep{45610}.}
+\label{humantable}
 \end{table}
 They further carried out extensive experiments on many Google’s internal production data sets. As the experiments mentioned earlier carried doubts whether RL improves the real translation quality or simply the BLEU metric, they did not use model refinement for these experiments. The results obtained by the experiment showed that their model reduced translations by more than 60\% compared to the PBMT model on the major pairs of languages.
 
 
 \subsection{OpenNMT}
-OpenNMT is an open source framework for Neural Machine Translation developed by Harvard University and SYSTRAN. They designed OpenNMT with three aims: a) prioritize first training and test efficiency b) maintain model modularity and readability, c) support significant research extensibility. [Main OpenNMT] . 
+OpenNMT is an open source framework for Neural Machine Translation developed by Harvard University\footnote{\url{http://nlp.seas.harvard.edu/}, accessed:15.08.2018} and SYSTRAN\footnote{\url{http://www.systransoft.com//}, accessed:15.08.2018}. \cite{opennmt} designed OpenNMT with three aims: a) prioritize first training and test efficiency b) maintain model modularity and readability, c) support significant research extensibility. 
 
 They designed and developed  OpenNMT at Harvard, as a successor to $seq2seq-atn$, it was completely rewritten for ease of efficiency ,readability and generalizability. The OpenNMT framework includes the Vanilla NMT Models as well as provides support for attention, gating, stacking, input feeding, regularization, beam search and other options needed for State-of-the-art performance. They implemented the main system in the Lua/Torch mathematical framework which can be easily extended using Torch's internal neural network components. 
 
@@ -343,11 +359,7 @@ The authors designed the OpenNMT to meet certain goals: System Efficiency, code 
 
 \begin{figure}
 \includegraphics[width=\textwidth]{figures/openmt.png}
-\caption{ Schematic view of neural machine translation. The red source words are first mapped to
-word vectors and then fed into a recurrent neural network (RNN). Upon seeing the heosi symbol, the final
-time step initializes a target blue RNN. At each target time step, attention is applied over the source RNN
-and combined with the current hidden state to produce a prediction p(wt|w1:t−1, x) of the next word. This
-prediction is then fed back into the target RNN} \label{fig1}
+\caption{ Schematic view of neural machine translation implemented in OpenNMT\citep{opennmt}.  } \label{fig1}
 \end{figure}
 
 
@@ -357,7 +369,7 @@ One of the biggest concerns about the Neural Machine Translation Systems is the 
 
 \textbf{Memory Sharing} The most common reason for high time consumption while training GPU-based NMT models is due to the memory size restrictions which limit the batch size. Though neural network toolkits like Torch has been designed to trade-off the surplus memory allocations for speed and declarative simplicity. For OpenNMT they implemented an external memory sharing system that utilizes the time-series control flow of NMT systems and vigorously shares the internal buffers between the clones. This implementation of vigorously memory reuse results in conservation of about 70\% of GPU memory with the default model size.
 
-\textbf{Multi-GPU} The authors added support for multi-GPU training using data parallelism. Two modes were made available: synchronous and asynchronous training. In synchronous training, the batches run concurrently on parallel GPU and gradients aggregated to update master parameters before resynchronization on each GPU for the next batch. While in asynchronous training, the batches run independent on each GPU and independent gradients accumulated to the master copy of the parameters. Asynchronous SGD is known to provide faster convergence [Reference e (Dean et al., 2012). ] 
+\textbf{Multi-GPU} The authors added support for multi-GPU training using data parallelism. Two modes were made available: synchronous and asynchronous training. In synchronous training, the batches run concurrently on parallel GPU and gradients aggregated to update master parameters before resynchronization on each GPU for the next batch. While in asynchronous training, the batches run independent on each GPU and independent gradients accumulated to the master copy of the parameters. Asynchronous SGD is known to provide faster convergence \citep{NIPS2012_4687}. 
 
 \textbf{C/Mobile/GPU Translation} The authors included several different translation models for different run-time environments in OpenNMT: a batched CPU/GPU implementation for quick translation of large set of sentences, a simple single-instance implementation for use on mobile devices and a specialized C implementation. 
 
@@ -365,22 +377,17 @@ One of the biggest concerns about the Neural Machine Translation Systems is the 
 
 The secondary goal for the authors were to make the code readable for non-experts and they targeted this goal by explicitly separating out optimizations from the core model and by including tutorial documentations within the code. 
 
-Need to write here 
 
-\textbf{Extensibility}
+\subsubsection{Extensibility}
 
 The field of Deep Learning is quickly evolving and technologies change very frequently. The authors went to perform different case studies to ensure that OpenNMT adhere to code extensibility and support the future variants.
 
-Need to write a little more
+Table \ref{opentable} shows the performance results of OpenNMT against Neamtus , which shows the performance of OpenNMT models were much better than Nematus. Both the systems were having 2x500 RNN, embedding,size of 300, trained for 13 epochs, batch size of 64 and beam size of 5.
 
 
 \begin{table}[h!]
 \caption{Performance Results for EN→DE on WMT15
-tested on newstest2014. Both system 2x500 RNN, embedding
-size 300, 13 epochs, batch size 64, beam size 5. We
-compare on a 50k vocabulary and a 32k BPE setting. OpenNMT
-showed improvements in speed and accuracy compared
-to Nematus.\label{long}}
+tested on newstest2014.\citep{opennmt}\label{long}}
 \centering
  \begin{tabular}{ |c|c|c|c|c| } 
  \hline Vocab & System & Speed Train & tok/sec Trans & BLEU \\ 
@@ -390,27 +397,28 @@ to Nematus.\label{long}}
  &&OpenNMT & 5254 & 457 & 19.34\\ 
  \hline
  \end{tabular}
+ \label{opentable}
 \end{table}
 
 \subsection{Nematus}
 
-Nematus is an open source toolkit developed by Sennrich et al.(2017) from the Edinburgh NLP group, it is implemented in Python and based on the Theano framework (Theano Development Team, 2016) . They implemented an attentional encoder-decoder architecture which is similar to the one described by Bahadanau et al.(2015) , but there were several implementational differences.
+Nematus is an open source toolkit developed by \cite{DBLP:journals/corr/SennrichFCBHHJL17} from the Edinburgh NLP group\footnote{\url{http:/edinburghnlp.inf.ed.ac.uk/}, accessed:15.08.2018}, it is implemented in Python and based on the Theano framework \citep{DBLP:journals/corr/Al-RfouAAa16} . They implemented an attentional encoder-decoder architecture which is similar to the one described by \cite{DBLP:journals/corr/BahdanauCB14} , but there were several implementational differences.
 \begin{itemize}
 \item In the implementation of Nematus they initialized the decoder hidden state with the mean of the source annotation, rather than the annotation at the last position of the encoder backward RNN. 
 \item They implemented a new conditional GRU with attention for Nematus.
 \item In the decoder, they used a feedforward hidden layer with tanh non-linearity rather than a maxout before the softmax layer.
-\item They didn’t implemented any additional biases for both encoder and decoder embedding layers.
-\item The implementation of Bahadanau et al. (2015) used Look, Generate, Update decoder phases whereas in Nematus they implemented Look, Update, Generate which simplified decoder implementation significantly (See Table 1). 
-\item They performed recurrent Bayesian dropout (Gal,,2015)
-\item In Nematus they allowed multiple features (or “factors”) at each time step instead of a single word embedding at each source position, with the final embedding being the concatenation of the embeddings of each feature (Sennrich and Haddow, 2016).
-\item They allowed tying of embedding matrices (Press and Wolf,2017;Inan et al.,2016).
+\item They didn’t implement any additional biases for both encoder and decoder embedding layers.
+\item The implementation of \cite{DBLP:journals/corr/BahdanauCB14} used Look, Generate, Update decoder phases whereas in Nematus they implemented Look, Update, Generate which simplified decoder implementation significantly (See Table 1). 
+\item They performed recurrent Bayesian dropout \citep{Gal:2016:TGA:3157096.3157211}.
+\item In Nematus they allowed multiple features (or “factors”) at each time step instead of a single word embedding at each source position, with the final embedding being the concatenation of the embeddings of each feature \citep{DBLP:journals/corr/SennrichH16}.
+\item They allowed tying of embedding matrices \citep{DBLP:journals/corr/PressW16,DBLP:journals/corr/InanKS16}.
 \end{itemize}
 
 \begin{table}[h!]
 \centering
  \begin{tabular}{ |ll|ll|} 
  \hline
- \multicolumn{2}{|l|}{RNNSearch (Bahdanau et al., 2015)} & \multicolumn{2}{l|}{Nematus (DL4MT)}\\
+ \multicolumn{2}{|l|}{RNNSearch \citep{DBLP:journals/corr/BahdanauCB14}} & \multicolumn{2}{l|}{Nematus (DL4MT)}\\
   \hline  Phase & Output - Input & Phase & Output - Input \\
   \hline Look & $C_j$ $\leftarrow$ $S_{j-1}$ ,C & Look & $C_j$ $\leftarrow$ $S_{j-1}$, $Y_{j-1}$ ,C \\
   Generate & $Y_j$ $\leftarrow$ $S_{j-1}$, $Y_{j-1}$ ,$C_j$ & Update& $S_j$ $\leftarrow$ $S_{j-1}$, $Y_{j-1}$ ,$C_j$ \\
@@ -418,12 +426,12 @@ Nematus is an open source toolkit developed by Sennrich et al.(2017) from the Ed
   \hline
  \end{tabular}
 
-\caption{Decoder phase differences between Nematus (DL4MT) and RNNSearch (Bahdanau et al., 2015)}
+\caption{Decoder phase differences between Nematus (DL4MT)\citep{DBLP:journals/corr/SennrichFCBHHJL17} and RNNSearch \citep{DBLP:journals/corr/BahdanauCB14}. }
 \end{table}
 
 Given a source sequence ($x_1, . . . , x_T_x$ ) of length $T_x$ and a target sequence ($y_1, . . . , y_T_y$ ) of length $T_y$, let $h_i$ be the annotation of the source symbol at position $i$, obtained by concatenating the forward and backward encoder RNN hidden states, $h_i$ = [\overrightarrow{h_i} ; \overleftarrow{h_i} ], and $s_j$ be the decoder hidden state at position $j$.
 
-\textbf{Decoder Initialization} Bahadanau et al. (2015) initialized the decoder hidden state $s$ with the last backward encoder state.
+\textbf{Decoder Initialization} \cite{DBLP:journals/corr/SennrichFCBHHJL17} initialized the decoder hidden state $s$ with the last backward encoder state.
 \begin{equation}
 S_0 = tanh (W_{init}\overleftarrow{h_i})
 \end{equation}
@@ -451,7 +459,7 @@ s_j^` &= GRU_1(y_{j-1},s_{j-1})=(1-z_j^`)\bigodot \underline{s}_j^`+z_j^`\bigodo
 {z}_j^`&= \sigma (W_z^`E[y_{j-1}]+U_z^`s_{j-1}),
 \end{align*}
 
-, where $E$ is the target word embedding matrix, \underline{s}$_j^`$ is the proposal intermediate representation, $r_j^`$ and $z_j^`$ being the reset and update gate activation. In this formulation, $W^`$ , $U^`$ , $W_r^`$ , $U_r^`$ , $W_z^`$ , $U_z^`$ are trained model parameters; $\sigma$ is the logistic $sigmoid$ activation function.
+, where $E$ is the target word embedding matrix, \underline{s}$_j^`$ is the proposal intermediate representation, $r_j^`$ and $z_j^`$ being the reset and update gate activation. In this formulation, $W^`$ , $U^`$ , $W_r^`$ , $U_r^`$ , $W_z^`$ , $U_z^`$ are trained model parameters; $\sigma$ is the logistic $sigmoid$ activation function \citep{DBLP:journals/corr/SennrichFCBHHJL17}.
 
 In the Nematus implementation, the entire context set $C$ along with intermediate hidden state $s_j$ is taken as input in the attention mechanism ATT, in order to computer the context vector $c_j$ as follows:
 
@@ -460,7 +468,7 @@ c_j &= ATT(C,s_j^`)= \sum_{i}^{T_x}{a_{ij}}h_i\\
 \alpha_{ij}&= \frac{exp(e_{ij})}{\sum_{k=1}^{T_x}exp(e_{kj})}\\
 e_{ij} &= V_{\alpha}^T tanh(U_{\alpha}s_j^`+W__{\alpha}h_i)
 \end{align*}
-, where $\alpha_{ij}$ is the normalized alignment weight between source symbol at position $i$ and target symbol at position $j$ and $v_\alpha$, $U_\alpha$,$W_\alpha$ are the trained model parameters.
+, where $\alpha_{ij}$ is the normalized alignment weight between source symbol at position $i$ and target symbol at position $j$ and $v_\alpha$, $U_\alpha$,$W_\alpha$ are the trained model parameters \citep{DBLP:journals/corr/SennrichFCBHHJL17}.
 
 In the next step , $s_j$ is generated by the second transition block $GRU_2$ 
 
@@ -471,9 +479,9 @@ s_j^` = GRU_2(s_j^`,c_j)&=(1-z_j^`)\bigodot \underline{s}_j+z_j\bigodot s_{j}^`,
 {z}_j&= \sigma (W_zc_j+U_zs_j^`),
 \end{align*}
 
-, where \underline{s}$_j$ is the proposal hidden state, $r_j$ and $z_j$ being the reset and update gate activation. In this formulation, $W$ , $U$ , $W_r$ , $U_r$ , $W_z$ , $U_z$ are trained model parameters.
+, where \underline{s}$_j$ is the proposal hidden state, $r_j$ and $z_j$ being the reset and update gate activation. In this formulation, $W$ , $U$ , $W_r$ , $U_r$ , $W_z$ , $U_z$ are trained model parameters \citep{DBLP:journals/corr/SennrichFCBHHJL17}.
 
-In Nematus, the two implemented GU blocks are not individually recurrent, they are only recurrent at the level of the whole cGRU layer. This way of combining RNN blocks is similar to what is referred in the literature as deep transition RNNs (Pascanu et al., 2014; Zilly et al., 2016) as opposed to the more common stacked RNNs (Schmidhuber, 1992; El Hihi and Bengio, 1995; Graves, 2013).
+In Nematus, the two implemented GU blocks are not individually recurrent, they are only recurrent at the level of the whole cGRU layer. This way of combining RNN blocks is similar to what is referred in the literature as deep transition RNNs \citep{DBLP:journals/corr/PascanuGCB13,DBLP:journals/corr/ZillySKS16} as opposed to the more common stacked RNNs \citep{doi:10.1162/neco.1992.4.2.234,ElHihi:1995:HRN:2998828.2998898, DBLP:journals/corr/Graves13}.
 
 \textbf{deep output} Given $s_j , y_{j-1},$ and $c_j$ , the output probability $p(y_j|s_j , y_{j-1}, c_j )$ is computed by a softmax activation, using an intermediate representation $t_j$ . 
 
@@ -482,62 +490,66 @@ p(y_j|s_j , y_{j-1}, c_j ) = softmax (t_jW_o)\\
 t_j=tanh (s_jW_{t1} + E[y_{j-1}]W_{t2} + c_jW_{t3}) \\
 \end{align*}
 
-,where $W_{t1},W_{t2},W_{t3},W_o$ are the trained model parameters.
+,where $W_{t1},W_{t2},W_{t3},W_o$ are the trained model parameters \citep{DBLP:journals/corr/SennrichFCBHHJL17}.
 
-They designed the Nematus to minimize the cross-entropy on parallel training corpus. For the training they used stochastic gradient descent, or one of its variants with adaptive learning rate (Adadelta (Zeiler, 2012), RmsProp (Tieleman and Hinton, 2012), Adam (Kingma and Ba, 2014)). Further, to optimize towards arbitrary, sentence level loss function they provided support for minimum risk training (MRT) (Shen et al., 2016). 
+They designed the Nematus to minimize the cross-entropy on parallel training corpus. For the training they used stochastic gradient descent, or one of its variants with adaptive learning rate Adadelta \citep{DBLP:journals/corr/abs-1212-5701}, RmsProp\citep{hinton} , Adam \citep{DBLP:journals/corr/KingmaB14}. Further, to optimize towards arbitrary, sentence level loss function they provided support for minimum risk training (MRT) \citep{DBLP:journals/corr/ShenCHHWSL15}. 
 
 \begin{figure}
-\includegraphics[width=\textwidth]{figures/nematus.png}
+\includegraphics[width=\textwidth,height=250pt]{figures/nematus.png}
 \caption{ Search graph visualisation for DE$\rightarrow$ EN
-translation of "Hallo Welt!" with beam size 3 using Nematus} \label{fignm2}
+translation of "Hallo Welt!" with beam size 3 using Nematus\citep{DBLP:journals/corr/SennrichFCBHHJL17}.} \label{fignm2}
 \end{figure}
 
 \subsection{Neural Monkey}
-Neural Monkey is an open-source toolkit written using the TensorFlow machine learning library (Abadi et al., 2016). It provides a higher level API, such that it should be enough for the users to be familiar with the models on the equation level, without delving into implementation details. As compared to other open-source NMT toolkits, Neural Monkey provides a higher level of abstraction, along with a simple configuration mechanism that allows for fast prototyping and reusing trained models and experiment management.
+Neural Monkey is an open-source toolkit written using the TensorFlow machine learning library \citep{DBLP:journals/corr/AbadiABBCCCDDDG16} developed by \cite{neuralmonk}. It provides a higher level API, such that it should be enough for the users to be familiar with the models on the equation level, without delving into implementation details. As compared to other open-source NMT toolkits, Neural Monkey provides a higher level of abstraction, along with a simple configuration mechanism that allows for fast prototyping and reusing trained models and experiment management.
 
-The building blocks of Neural Monkey are not individual network layers like \textit{tfLearn} or \textit{Lasagne} , but they are more abstract objects like encoders and classifiers. These objects are parametrized so that their properties (e.g. number and sizes of hidden layers or dropout probability) can be set from a farther perspective. [Reference]. This design process allowed the authors to separate the configuration of the experiments from the actual code, which prevented the users from interleaving the configuration with other program logic. 
+The building blocks of Neural Monkey are not individual network layers like \textit{tfLearn}\footnote{\url{http://tflearn.org/},accessed:11.08.2018} or \textit{Lasagne}\footnote{\url{https://github.com/Lasagne/Lasagne/},accessed:11.08.2018} , but they are more abstract objects like encoders and classifiers. These objects are parametrized so that their properties (e.g. number and sizes of hidden layers or dropout probability) can be set from a farther perspective \citep{neuralmonk}. This design process allowed the authors to separate the configuration of the experiments from the actual code, which prevented the users from interleaving the configuration with other program logic. 
 
 \begin{figure}
 \includegraphics[width=\textwidth]{figures/nmonkey2.png}
-\caption{ Creation of Dataset in Neural Monkey} \label{fignm2}
+\caption{ Creation of Dataset in Neural Monkey \citep{neuralmonk}.} \label{fignm2}
 \end{figure}
 
-In Neural Translation Systems, the loading and processing of datasets is one of the most important systems. The dataset in Neural Monkey is created in three step, first an input file is read using a Reader which load a file containing paths to JPEG images and load them as NumPy arrays, or read tokenized text as a list of lists of string tokens. The next phase is pre-processors, the series created by the readers is pre-processed by the system such as byte-pair encoding (Sennrich et al., 2016) which loads a list of merges and segments the text accordingly. Finally, the dataset-level pre-processors are applied of multiple series data to create the final dataset. 
+In Neural Translation Systems, the loading and processing of datasets is one of the most important systems. The dataset in Neural Monkey is created in three step, first an input file is read using a Reader which load a file containing paths to JPEG images and load them as NumPy arrays, or read tokenized text as a list of lists of string tokens. The next phase is pre-processors, the series created by the readers is pre-processed by the system such as byte-pair encoding \citep{P16-1162} which loads a list of merges and segments the text accordingly. Finally, the dataset-level pre-processors are applied of multiple series data to create the final dataset. 
 
 \begin{figure}
 \includegraphics[width=\textwidth]{figures/nmonkey1.png}
-\caption{ Model workflow in Neural Monkey} \label{fignm1}
+\caption{ Model workflow in Neural Monkey \citep{neuralmonk}} \label{fignm1}
 \end{figure}
 
 
 The model in Neural Monkey is defined by different model parts such as encoders and decoders. The authors defined the encoders and decoders in more general than the classical Sequence to Sequence Learning. They defined the Encoders as parts of the model which take the input and compute a representation of it. They used runners for the execution of the Decoders. They designed different runners to represent different ways of running the model. They implemented trainer which is a runner to modify the parameters of the model, to collect the objective functions and use them in a optimizer. They used an object called TensorFlow manager to manage all the TensorFlow sessions. 
 
-In order to validate the Neural Monkey’s performance the authors did a sanity check evaluation on the architechture introduced by Bahadanau et al. (2014) which became the standard baseline model in NMT research. 
+In order to validate the Neural Monkey’s performance the authors did a sanity check evaluation on the architechture introduced by \cite{DBLP:journals/corr/BahdanauCB14} which became the standard baseline model in NMT research. 
 
 
-
-
-
-
-
-
-The used a bi-directional GRU network with 500 hidden units in each direction as the encoder and for decoder they used an RNN decoder with 1000 units in the hidden layer. They used a simple ‘tanh’ projection instead of max-out projection as used in the original model. The original paper used Adadelta (Zeiler, 2012) optimizer, whereas for this comparative study they used Adam (Kingma and Ba, 2014) . The comparison of the models is shown in Table. 
+They used a bi-directional GRU network with 500 hidden units in each direction as the encoder and for decoder they used an RNN decoder with 1000 units in the hidden layer. They used a simple ‘tanh’ projection instead of max-out projection as used in the original model. The original paper used Adadelta \citep {DBLP:journals/corr/abs-1212-5701} optimizer, whereas for this comparative study they used Adam \citep{DBLP:journals/corr/KingmaB14} . The comparison of the models is shown in Table. 
 
 \begin{table}[h!]
 \centering
  \begin{tabular}{ |c|c|c| } 
   \hline Model & BLEU & epoch \\ 
-  \hline  Bahdanau et al.(2014) - neural & 26.75 & 2.2\\
-  Bahdanau et al.(2014) - neural & 28.45 & 6.0\\
+  \hline  \cite{DBLP:journals/corr/BahdanauCB14} - neural & 26.75 & 2.2\\
+ \cite{DBLP:journals/corr/BahdanauCB14} - neural & 28.45 & 6.0\\
   SMT & 33.30 & -\\
   \hline Neural Monkey - greedy decoding & 25.08 & 1.2\\
   Neural Monkey + CGRU – greedy decoding  & 27.35 & 1.6\\
   \hline
  \end{tabular}
-\caption{Results achieved by Neural Monkey on the WMT14 News Task French to English dataset with the number epochs}
+\caption{Results achieved by Neural Monkey on the WMT14 News Task French to English dataset with the number epochs \citep{neuralmonk}.}
 \end{table}
 
 \section{Related Work}
+
+In WAT 2017\footnote{{\url{http://lotus.kuee.kyoto-u.ac.jp/WAT/WAT2017/},accessed:20.08.2018}} , the convolutional sequence to sequence model by  \cite{Singh2017ComparingRA} achieved a BLEU score 12.23 for English to Hindi translations using the same corpus. In the same workshop, the baseline system designed by \cite{W17-5707} achieved a BLEU score of 13.69. 
+
+
+\cite{Revanuru:2017:NMT:3140107.3140111} created a system with multiple models which were used for six Indian language pairs. The compared the results of their system with Google Translate, and their best model outperformed Google Translate by a margin of 17 BLEU points on Urdu-Hindi, 29 BLEU points on Punjabi-Hindi, and 30 BLEU points on Gujarati-Hindi translations.
+
+\cite{10.1007/978-3-319-63645-0_55} created a translation tool named English to Hindi Translator using Translation Memory which can transform an English sentence to its proper Hindi meaning. This translator works on both exact match and fuzzy match. 
+
+\cite{10.1007/978-981-10-8657-1_62} created an Indic machine translation system that utilized recent advancement in the area of machine translation using deep neural architectures. The results showed that neural machine translation systems can yield more natural translations than rule based or phrase based translation systems.
+
 \section{Conclusion}
 
 In this chapter, the background and State of the Art were discussed, in order to address the research question. The previous researches field of machine translation were presented with the focus on concepts and principles centered on this research pursuit.
@@ -546,6 +558,6 @@ Next, the previous works in the field of Statistical Machine Translation was int
 
 Finally, research within the area of Neural Machine Translation was discussed, focusing on the time-line of historical research and the latest innovations in the study of machine translations. Google's state of art neural machine translation was discussed in details as it is a major motivation for this research. These are studies that closely relate to this work in their concerns and aims.
 
-In concluding the State of the Art, the related works in the area of neural machine translations in Hindi - English is discussed. There appears a substantial gap in the area of neural machine translation in Hindi-English. While much investigation has been carried out, but most of these investigations were carried out using smaller corpora and using biased test sets.
+In concluding the State of the Art, the related works in the area of neural machine translations in English-Hindi  is discussed. There appears a substantial gap in the area of neural machine translation in Hindi-English. 
 
-The goal of this work is to use neural machine translation on a larger Hindi-English corpora and produce better translations which are more generic. And subsequently, fine tuning the trained model using a new domain specific smaller corpus to produce better domain specific results.  
+The goal of this work is to use neural machine translation on a larger Hindi-English corpora and produce above average translations which are more generic. And subsequently, fine tuning the trained model using a new domain specific smaller corpus to produce better domain specific results.  
